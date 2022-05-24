@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
-import useMondrian from "../hooks/useMondrian";
+import React, { useRef, useEffect } from 'react';
 import { CustomRect, heightRect, widthRect, randInt} from "../utils";
 
 
@@ -18,24 +17,23 @@ interface MondrianCanvasProps {
   width?: number;
   height?: number;
   thickness?: number;
+  rects: CustomRect[];
 }
 
-function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCanvasProps) {
+function MondrianCanvas({width = 800, height = 800, thickness= 10, rects} : MondrianCanvasProps) {
   const refCanvas = useRef<HTMLCanvasElement>(null);
-  const { generate } = useMondrian();
   useEffect(() => {
+    function drawBorder(context : CanvasRenderingContext2D) {
+      drawBorderGen(context, {x1: 0, y1: 0, x2: width, y2: height}, thickness);
+    }
+
     if(refCanvas.current) {
       // debugging purpose
       //refCanvas.current.style.background = "purple";
-
-      const xPad = Math.floor(width * 0.1);
-      const yPad = Math.floor(height * 0.1);
-
       const context = refCanvas.current.getContext("2d");
       if(context) {
         context.clearRect(0,0, width, height);
-        const reacts = generate(width, height, xPad, yPad);
-        reacts.forEach(rect => {
+        rects.forEach(rect => {
           drawRect(context, rect);
           drawBorderGen(context, rect, thickness/2);
         })
@@ -43,11 +41,7 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCan
         
       }
     }
-  }, [refCanvas]);
-
-  function drawBorder(context : CanvasRenderingContext2D) {
-    drawBorderGen(context, {x1: 0, y1: 0, x2: width, y2: height}, thickness);
-  }
+  }, [refCanvas, rects]);
 
   function drawBorderGen(context: CanvasRenderingContext2D, rect: CustomRect, thickness: number ) {
     const width = widthRect(rect);

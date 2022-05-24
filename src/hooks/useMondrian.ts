@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import { useState } from 'react'; 
 import { CustomRect, heightRect, widthRect, randInt} from "../utils";
 
 function useMondrian() {
@@ -57,7 +57,10 @@ function useMondrian() {
   }
 
 
-  function generate(canvasWidth: number, canvasHeight: number, xPad: number, yPad: number, nbIterations: number = 3) {
+  function generate(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
+    // magic number to avoid to little rects
+    const xPad = canvasWidth * 0.1;
+    const yPad = canvasHeight * 0.1;
     let accRects : CustomRect[] = [];
     generateMondrian(
        {x1: 0, y1: 0, x2: canvasWidth, y2: canvasHeight},
