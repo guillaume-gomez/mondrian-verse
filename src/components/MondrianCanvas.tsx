@@ -7,10 +7,10 @@ const colors = [
     'white',
     'white',
     'white',
-    'black',
-    'red',
-    'blue',
-    'yellow'
+    //'black',
+    '#e90018',
+    '#0e63b7',
+    '#f9da00'
 ]
 
 interface MondrianCanvasProps {
@@ -32,7 +32,8 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCan
 
       const context = refCanvas.current.getContext("2d");
       if(context) {
-        generateMondrian(context, {x1: 0, y1: 0, x2: width, y2: height}, xPad, yPad, 1, 5);
+        context.clearRect(0,0, width, height);
+        generateMondrian(context, {x1: 0, y1: 0, x2: width, y2: height}, xPad, yPad, 0, 3);
         drawBorder(context);
         
       }
@@ -40,13 +41,20 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCan
   }, [refCanvas]);
 
   function drawBorder(context : CanvasRenderingContext2D) {
+    drawBorderGen(context, {x1: 0, y1: 0, x2: width, y2: height}, thickness);
+  }
+
+  function drawBorderGen(context: CanvasRenderingContext2D, rect: CustomRect, thickness: number ) {
+    const width = widthRect(rect);
+    const height = heightRect(rect);
+    const { x1, y1, x2, y2 } = rect;
+
     context.fillStyle = "black";
-    context.fillRect(0, 0, width, thickness);
-    context.fillRect(0, height - thickness, width, thickness);
+    context.fillRect(x1, y1, width, thickness);
+    context.fillRect(x1, y2 - thickness, width, thickness);
 
-    context.fillRect(0, 0, thickness, height);
-    context.fillRect(width - thickness, 0, width, height);
-
+    context.fillRect(x1, y1, thickness, height);
+    context.fillRect(x2 - thickness, y1, thickness, height);
   }
 
   function generateMondrian(
@@ -54,18 +62,22 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCan
       rect: CustomRect,
       xPad: number,
       yPad: number,
-      depth: number = 1,
+      depth: number = 0,
       limit: number = 1
     ) {
     // Check the level of recursion
-    if (depth == limit) {
+    if (depth === limit) {
       return;
     }
 
     const rectsArray = splitRects(rect, xPad, yPad);
-    if(rectsArray.length == 2) {
+    if(rectsArray.length === 2) {
       drawRect(context, rectsArray[0]);
       drawRect(context, rectsArray[1]);
+      console.log(rectsArray)
+
+      drawBorderGen(context, rectsArray[0], thickness/2);
+      drawBorderGen(context, rectsArray[1], thickness/2);
 
       generateMondrian(context, rectsArray[0], xPad, yPad, depth + 1, limit);
       generateMondrian(context, rectsArray[1], xPad, yPad, depth + 1, limit);
@@ -96,9 +108,12 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCan
       }
   }
 
-  function drawRect(context: CanvasRenderingContext2D, {x1, y1, x2, y2}: CustomRect) {
-      context.fillStyle = '#' + Math.floor(Math.random()*16777215).toString(16); //colors[randInt(0, colors.length)]
-      context.fillRect(x1, y1, x2, y2);
+  function drawRect(context: CanvasRenderingContext2D, rect: CustomRect) {
+      context.fillStyle = colors[randInt(0, colors.length)]; /*'#' + Math.floor(Math.random()*16777215).toString(16); */
+      const width = widthRect(rect);
+      const height = heightRect(rect);
+      const {x1, y1 } = rect;
+      context.fillRect(x1, y1, width, height);
   }
 
   return (

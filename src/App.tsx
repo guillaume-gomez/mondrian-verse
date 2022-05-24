@@ -11,7 +11,7 @@ function App() {
     <div>
       <header>
           <NavBar githubUrl={githubUrl} />
-          <div className="bg-secondary d-flex flex-col justify-center items-center gap-5">
+          <div className="bg-primary d-flex flex-col justify-center items-center gap-5">
             <h1 className="text-3xl font-bold underline">
               Hello world!
             </h1>
