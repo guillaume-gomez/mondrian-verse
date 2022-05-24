@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import useMondrian from "../hooks/useMondrian";
 import { CustomRect, heightRect, widthRect, randInt} from "../utils";
 
 
@@ -21,11 +22,11 @@ interface MondrianCanvasProps {
 
 function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCanvasProps) {
   const refCanvas = useRef<HTMLCanvasElement>(null);
-  const [rects, setRects] = useState<CustomRect[]>([]);
-
+  const { generate } = useMondrian();
   useEffect(() => {
     if(refCanvas.current) {
-      refCanvas.current.style.background = "white";
+      // debugging purpose
+      //refCanvas.current.style.background = "purple";
 
       const xPad = Math.floor(width * 0.1);
       const yPad = Math.floor(height * 0.1);
@@ -33,7 +34,11 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCan
       const context = refCanvas.current.getContext("2d");
       if(context) {
         context.clearRect(0,0, width, height);
-        generateMondrian(context, {x1: 0, y1: 0, x2: width, y2: height}, xPad, yPad, 0, 3);
+        const reacts = generate(width, height, xPad, yPad);
+        reacts.forEach(rect => {
+          drawRect(context, rect);
+          drawBorderGen(context, rect, thickness/2);
+        })
         drawBorder(context);
         
       }
@@ -55,57 +60,6 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10} : MondrianCan
 
     context.fillRect(x1, y1, thickness, height);
     context.fillRect(x2 - thickness, y1, thickness, height);
-  }
-
-  function generateMondrian(
-      context: CanvasRenderingContext2D,
-      rect: CustomRect,
-      xPad: number,
-      yPad: number,
-      depth: number = 0,
-      limit: number = 1
-    ) {
-    // Check the level of recursion
-    if (depth === limit) {
-      return;
-    }
-
-    const rectsArray = splitRects(rect, xPad, yPad);
-    if(rectsArray.length === 2) {
-      drawRect(context, rectsArray[0]);
-      drawRect(context, rectsArray[1]);
-      console.log(rectsArray)
-
-      drawBorderGen(context, rectsArray[0], thickness/2);
-      drawBorderGen(context, rectsArray[1], thickness/2);
-
-      generateMondrian(context, rectsArray[0], xPad, yPad, depth + 1, limit);
-      generateMondrian(context, rectsArray[1], xPad, yPad, depth + 1, limit);
-    }
-  }
-
-  function splitRects(rect: CustomRect, xPad: number, yPad: number) : [CustomRect, CustomRect] | [] {
-     // Check the rectangle is enough large and tall
-     const width = widthRect(rect);
-     const height = heightRect(rect);
-      if (width < 2 * xPad || height < 2 * yPad) {
-          return [];
-      }
-      const { x1, x2, y1, y2 } = rect;
-
-      // If the rectangle is wider than it's height do a left/right split
-      if (width > height) {
-          const x = randInt(rect.x1 + xPad, rect.x2 - xPad);
-          const r1 = { x1, y1, x2: x, y2 };
-          const r2 = { x1: x, y1, x2, y2 };
-          return [r1, r2];
-      // Else do a top/bottom split
-      } else {
-          const y = randInt(rect.y1 + yPad, rect.y2 - yPad);
-          const r1 = { x1, y1, x2, y2: y };
-          const r2 = { x1, y1: y, x2, y2 };
-          return [r1, r2];
-      }
   }
 
   function drawRect(context: CanvasRenderingContext2D, rect: CustomRect) {

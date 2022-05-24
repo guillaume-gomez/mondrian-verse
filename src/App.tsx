@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
@@ -11,14 +11,14 @@ function App() {
     <div>
       <header>
           <NavBar githubUrl={githubUrl} />
-          <div className="bg-primary d-flex flex-col justify-center items-center gap-5">
-            <h1 className="text-3xl font-bold underline">
-              Hello world!
-            </h1>
-            <MondrianCanvas />
-          </div>
-          <Footer githubUrl={githubUrl} />
       </header>
+      <div className="bg-primary flex flex-col justify-center items-center gap-5 py-5">
+        <h1 className="text-3xl font-bold underline">
+          Hello world!
+        </h1>
+        <MondrianCanvas />
+      </div>
+      <Footer githubUrl={githubUrl} />
     </div>
   );
 }
