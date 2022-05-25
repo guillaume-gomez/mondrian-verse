@@ -3,6 +3,7 @@ import './App.css';
 import useMondrian from "./hooks/useMondrian";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
+import SliderWithLabel from "./components/SliderWithLabel";
 import MondrianCanvas from "./components/MondrianCanvas";
 
 const githubUrl = "https://github.com/guillaume-gomez/mondrian-verse";
@@ -16,7 +17,7 @@ function App() {
 
   useEffect(() => {
     generate(width, height, nbIterations);
-  }, [/*generate*/width, height, nbIterations]);
+  }, [/*generate*/width, height, nbIterations, thickness]);
   // adding generate create a pleaseant glitch :p
   
   return (
@@ -24,24 +25,17 @@ function App() {
       <header>
           <NavBar githubUrl={githubUrl} />
       </header>
-      <div className="bg-primary flex flex-col justify-center items-center gap-5 py-5">
+      <div className="flex flex-col justify-center items-center gap-5 py-5">
         <MondrianCanvas width={width} height={height} thickness={thickness} rects={rects} />
-        <div className="">
-          <div id="thickness">
-            <input type="range" min="2" max="100" value={thickness} className="range" step="2" onChange={(e) => setThickness(parseInt(e.target.value, 10))} />
+        <div className="w-2/4 ">
+          <div className="flex flex-col justify-center gap-5">
+            <button className="btn btn-secondary" onClick={() => generate(width, height, nbIterations)}> Re Generate</button>
+            <SliderWithLabel label="Thickness" min={2} max={100} value={thickness} step={2} onChange={(value) => setThickness(parseInt(value))}/>
+            <SliderWithLabel label="Nb Iteration" min={2} max={15} value={nbIterations} step={1} onChange={(value) => setNbIteration(parseInt(value))}/>
+            <SliderWithLabel label="Width" min={400} max={1200} value={thickness} step={5} onChange={(value) => setWidth(parseInt(value))}/>
+            <SliderWithLabel label="Height" min={400} max={1200} value={thickness} step={5} onChange={(value) => setHeight(parseInt(value))}/>
           </div>
-          <div id="nbIterations">
-            <input type="range" min="2" max="15" value={nbIterations} className="range" step="1" onChange={(e) => setNbIteration(parseInt(e.target.value, 10))} />
-          </div>
-          <div id="width">
-            <input type="range" min="400" max="1200" value={width} className="range" step="2" onChange={(e) => setWidth(parseInt(e.target.value, 10))} />
-          </div>
-          <div id="height">
-            <input type="range" min="400" max="1200" value={height} className="range" step="2" onChange={(e) => setHeight(parseInt(e.target.value, 10))} />
-          </div>
-
-          <button className="btn btn-secondary" onClick={() => generate(width, height, nbIterations)}>Generate</button>
-        </div>
+         </div>
       </div>
       <Footer githubUrl={githubUrl} />
     </div>
