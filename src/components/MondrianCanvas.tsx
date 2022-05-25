@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { CustomRect, heightRect, widthRect, randInt} from "../utils";
 
 
@@ -20,7 +20,11 @@ interface MondrianCanvasProps {
   rects: CustomRect[];
 }
 
-function MondrianCanvas({width = 800, height = 800, thickness= 10, rects} : MondrianCanvasProps) {
+export interface ExternalActionInterface {
+  getImage: () => string |null ;
+}
+
+const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width = 800, height = 800, thickness= 10, rects}, ref) => {
   const refCanvas = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     function drawBorder(context : CanvasRenderingContext2D) {
@@ -42,6 +46,16 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10, rects} : Mond
       }
     }
   }, [refCanvas, rects]);
+
+  useImperativeHandle(ref, () => ({
+    getImage() {
+      if(refCanvas.current) {
+        return refCanvas.current.toDataURL('image/png');
+      }
+      return null;
+    }
+
+  }));
 
   function drawBorderGen(context: CanvasRenderingContext2D, rect: CustomRect, thickness: number ) {
     const width = widthRect(rect);
@@ -67,6 +81,6 @@ function MondrianCanvas({width = 800, height = 800, thickness= 10, rects} : Mond
   return (
     <canvas ref={refCanvas} width={width} height={height}/>
   );
-}
+});
 
 export default MondrianCanvas;
