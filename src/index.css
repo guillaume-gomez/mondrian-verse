@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+[data-theme="mytheme"] .btn {
+  border-width: 6px;
+  border-color: black;
+}
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

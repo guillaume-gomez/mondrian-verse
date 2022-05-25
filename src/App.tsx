@@ -56,9 +56,9 @@ function App() {
             <SliderWithLabel label="Nb Iteration" min={2} max={15} value={nbIterations} step={1} onChange={(value) => setNbIteration(parseInt(value))}/>
             <SliderWithLabel label="Width" min={400} max={1200} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
             <SliderWithLabel label="Height" min={400} max={1200} value={height} step={5} onChange={(value) => setHeight(parseInt(value))}/>
-            <button className="btn btn-secondary btn-xs" onClick={resetDefaultValues}> Set Default Values</button>
+            <button className="btn btn-secondary btn-sm" onClick={resetDefaultValues}> Set Default Values</button>
             <div className="flex flex-row self-end">
-              <a ref={refSave} className="btn btn-primary" onClick={saveImage}>Save</a>
+              <a ref={refSave} className="btn btn-accent" onClick={saveImage}>Save</a>
             </div>
           </div>
          </div>
