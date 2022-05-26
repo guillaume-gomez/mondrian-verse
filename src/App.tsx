@@ -23,6 +23,7 @@ function App() {
   const [nbIterations, setNbIteration] = useState<number>(3);
   const [thickness, setThickness] = useState<number>(10);
   const [enableBlack, setEnableBlack] = useState<boolean>(true);
+  const [mode, setMode] = useState<"2d"|"3d">("2d");
   const { generate, rects, setHasBlack } = useMondrian();
   
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
@@ -58,8 +59,18 @@ function App() {
           <NavBar githubUrl={githubUrl} />
       </header>
       <div className="flex flex-col justify-center items-center gap-5 py-5">
-        <MondrianThreeJs width={width} height={height} thickness={thickness} rects={rects} />
-        <MondrianCanvas ref={canvasActionsRef} width={width} height={height} thickness={thickness} rects={rects} />
+        <div className="form-control">
+            <label className="label cursor-pointer">
+            <span className="label-text">3D Version</span>
+            <input type="checkbox" className="toggle" checked={mode === "3d"} onChange={() => setMode(mode === "3d" ? "2d" : "3d")} />
+          </label>
+        </div>
+        {
+          mode === "3d" ?
+          <MondrianThreeJs width={width} height={height} thickness={thickness} rects={rects} />
+          :
+          <MondrianCanvas ref={canvasActionsRef} width={width} height={height} thickness={thickness} rects={rects} />
+        }
         <div className="w-1/4 ">
           <div className="flex flex-col justify-center gap-5">
             <button className="btn btn-secondary btn-lg" onClick={() => generate(width, height, nbIterations)}> Regenerate</button>
