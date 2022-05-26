@@ -7,6 +7,7 @@ interface NavBarProps {
 function NavBar({githubUrl} : NavBarProps ): React.ReactElement {
   return (
      <div className="navbar mb-2 bg-neutral-focus text-neutral-content p-6">
+     <img className="rounded-sm" src={process.env.PUBLIC_URL + '/logo192.png'} width="64px" />
       <div className="px-2 mx-2 navbar-start flex flex-col gap-1 items-start">
         <span className="text-2xl font-bold">
           Mondrian Verse
