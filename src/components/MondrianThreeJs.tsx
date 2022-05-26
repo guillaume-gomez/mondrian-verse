@@ -26,22 +26,28 @@ function MondrianThreeJs({width = 800, height = 800, thickness, rects} : Mondria
         // Call tick again on the next frame
         window.requestAnimationFrame(tick);
     }
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x191D24);
 
     let borders = new THREE.Group();
+    const material = new THREE.MeshBasicMaterial( {color: "black"} );
     borders.position.setZ(0.1);
     borders.translateX(-0.5);
     borders.translateY(0.5);
 
-    const scene = new THREE.Scene();
+
     rects.forEach((rect, index) => {
       const mesh = createPart(rect);
       mesh.translateX(-0.5);
       mesh.translateY(0.5)
       scene.add(mesh);
 
-      const bordersPart = createBorderPart(rect);
+      const bordersPart = createBorderPart(rect, material);
       borders.add(...bordersPart)
     });
+
+    const paintingBorders= createBorderPart({x1: 0, y1: 0, x2: width, y2: height, color: "#000000"}, material);
+    borders.add(...paintingBorders);
 
     scene.add(borders)
 
@@ -50,7 +56,7 @@ function MondrianThreeJs({width = 800, height = 800, thickness, rects} : Mondria
     //scene.add(axesHelper);
 
     const camera = new THREE.PerspectiveCamera(75, width / height);
-    camera.position.z = 1;
+    camera.position.z = 0.90;
     scene.add(camera);
 
     // Renderer
@@ -79,14 +85,12 @@ function MondrianThreeJs({width = 800, height = 800, thickness, rects} : Mondria
     return cube;
   }
 
-  function createBorderPart(rect: CustomRect) : [THREE.Mesh, THREE.Mesh, THREE.Mesh, THREE.Mesh] {
+  function createBorderPart(rect: CustomRect, material: THREE.MeshBasicMaterial) : [THREE.Mesh, THREE.Mesh, THREE.Mesh, THREE.Mesh] {
     const widthGeometry = widthRect(rect)/ width;
     const heightGeometry = heightRect(rect) / height;
     const thicknessWidth = thickness/width;
     const thicknessHeight = thickness/height;
     const [x, y] = centerRect(rect);
-    const material = new THREE.MeshBasicMaterial( {color: "black"} );
-
 
     const geometryTop = new THREE.BoxGeometry( widthGeometry, thicknessHeight, 0.1 );
     let topMesh = new THREE.Mesh( geometryTop, material );
@@ -94,7 +98,7 @@ function MondrianThreeJs({width = 800, height = 800, thickness, rects} : Mondria
 
     const geometryBottom = new THREE.BoxGeometry( widthGeometry, thicknessHeight, 0.1 );
     let bottomMesh = new THREE.Mesh( geometryTop, material );
-    bottomMesh.position.set((rect.x1 + x)/ width ,-(rect.y1 + heightGeometry + thicknessHeight)/height, 0);
+    bottomMesh.position.set((rect.x1 + x)/ width ,-(rect.y2 + thicknessHeight)/height, 0);
 
     const geometryLeft = new THREE.BoxGeometry( thicknessWidth, heightGeometry, 0.1 );
     let leftMesh = new THREE.Mesh( geometryLeft, material );
@@ -102,7 +106,7 @@ function MondrianThreeJs({width = 800, height = 800, thickness, rects} : Mondria
 
     const geometryRight = new THREE.BoxGeometry( thicknessWidth, heightGeometry, 0.1 );
     let rightMesh = new THREE.Mesh( geometryRight, material );
-    rightMesh.position.set((rect.x1 + widthGeometry + thicknessWidth)/ width , -(rect.y1 + y)/height, 0);
+    rightMesh.position.set((rect.x2 + thicknessWidth)/ width , -(rect.y1 + y)/height, 0);
 
     return [topMesh, bottomMesh, leftMesh, rightMesh];
   }
