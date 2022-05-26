@@ -7,16 +7,16 @@ const colors = [
     'white',
     'white',
     'white',
-    //'black',
+    '#2b2b2b',
     '#e90018',
     '#0e63b7',
     '#f9da00'
 ]
 
 interface MondrianCanvasProps {
-  width?: number;
-  height?: number;
-  thickness?: number;
+  width: number;
+  height: number;
+  thickness: number;
   rects: CustomRect[];
 }
 
@@ -24,11 +24,11 @@ export interface ExternalActionInterface {
   getImage: () => string |null ;
 }
 
-const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width = 800, height = 800, thickness= 10, rects}, ref) => {
+const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width, height, thickness, rects}, ref) => {
   const refCanvas = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     function drawBorder(context : CanvasRenderingContext2D) {
-      drawBorderGen(context, {x1: 0, y1: 0, x2: width, y2: height}, thickness);
+      drawBorderGen(context, {x1: 0, y1: 0, x2: width, y2: height, color: "#000000"}, thickness);
     }
 
     if(refCanvas.current) {
@@ -71,7 +71,7 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
   }
 
   function drawRect(context: CanvasRenderingContext2D, rect: CustomRect) {
-      context.fillStyle = colors[randInt(0, colors.length)]; /*'#' + Math.floor(Math.random()*16777215).toString(16); */
+      context.fillStyle = rect.color; /*'#' + Math.floor(Math.random()*16777215).toString(16); */
       const width = widthRect(rect);
       const height = heightRect(rect);
       const {x1, y1 } = rect;
