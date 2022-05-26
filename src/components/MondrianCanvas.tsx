@@ -1,17 +1,6 @@
 import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { CustomRect, heightRect, widthRect, randInt} from "../utils";
+import { CustomRect, heightRect, widthRect} from "../utils";
 
-
-const colors = [
-    'white',
-    'white',
-    'white',
-    'white',
-    '#2b2b2b',
-    '#e90018',
-    '#0e63b7',
-    '#f9da00'
-]
 
 interface MondrianCanvasProps {
   width: number;

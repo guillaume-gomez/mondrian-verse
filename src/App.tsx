@@ -10,13 +10,6 @@ import MondrianThreeJs from "./components/MondrianThreeJs";
 
 const githubUrl = "https://github.com/guillaume-gomez/mondrian-verse";
 
-const possibleColorsHumanize : { [key: string]: string} = {
-    '#2b2b2b': "Black",
-    '#e90018': "Red",
-    '#0e63b7': "Blue",
-    '#f9da00': "Yellow"
-}
-
 function App() {
   const [width, setWidth] = useState<number>(800);
   const [height, setHeight] = useState<number>(800);
