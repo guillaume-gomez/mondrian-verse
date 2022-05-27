@@ -16,7 +16,7 @@ function App() {
   const [nbIterations, setNbIteration] = useState<number>(3);
   const [thickness, setThickness] = useState<number>(10);
   const [enableBlack, setEnableBlack] = useState<boolean>(true);
-  const [mode, setMode] = useState<"2d"|"3d">("2d");
+  const [mode, setMode] = useState<"2d"|"3d">("3d");
   const { generate, rects, setHasBlack } = useMondrian();
   
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
