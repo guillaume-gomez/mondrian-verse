@@ -4,13 +4,14 @@ import { CustomRect, heightRect, widthRect, centerRect } from "../../utils";
 
 interface ColoredBoxProps {
   rect: CustomRect;
+  thickness: number;
   meshProps?: JSX.IntrinsicElements['mesh'];
 }
 
-function ColoredBox({rect, meshProps}: ColoredBoxProps) {
+function ColoredBox({rect, thickness, meshProps}: ColoredBoxProps) {
   const { size: { width, height } } = useThree();
-  const widthGeometry = useMemo(() => widthRect(rect)/ width  , [rect, width]);
-  const heightGeometry = useMemo(() => heightRect(rect)/ height , [rect, height]);
+  const widthGeometry = useMemo(() => (widthRect(rect) - thickness)/ width  , [rect, width]);
+  const heightGeometry = useMemo(() => (heightRect(rect) - thickness)/ height , [rect, height]);
   const [x, y] = useMemo(() => centerRect(rect), [rect]);
   /* -0.5 and 0.5 in position are here to center the shape*/
   return (

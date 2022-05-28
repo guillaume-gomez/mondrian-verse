@@ -19,13 +19,13 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
      <Canvas  camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }} style={{background: "#191D24", width, height }}>
         <Borders rects={rects} thickness={thickness} />
         {
-          rects.map((rect, index) => <ColoredBox key={index} rect={rect} />)
+          rects.map((rect, index) => <ColoredBox key={index} rect={rect} thickness={thickness} />)
         }
         {/*
         <axesHelper args={[2]} />
         <gridHelper/>
         */}
-        <ambientLight args={[0xffffff]} intensity={0.5} position={[-0.5, -0.5, -0.5]} />
+        <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
         <directionalLight position={[0, 0, 5]} intensity={0.5} />
     <OrbitControls />
   </Canvas>
