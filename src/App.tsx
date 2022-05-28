@@ -79,7 +79,7 @@ function App() {
             </div>
             <button className="btn btn-secondary btn-sm" onClick={resetDefaultValues}> Set Default Values</button>
             <div className="flex flex-row self-end">
-              <a ref={refSave} className="btn btn-accent" onClick={saveImage}>Save</a>
+              <a ref={refSave} className={`btn btn-accent ${mode === "3d" ? "btn-disabled" : ""}`} onClick={saveImage}>Save</a>
             </div>
           </div>
          </div>
