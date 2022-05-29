@@ -4,11 +4,12 @@ import { CustomRect, heightRect, widthRect, centerRect } from "../../utils";
 
 interface ColoredBoxProps {
   rect: CustomRect;
+  depth: number;
   thickness: number;
   meshProps?: JSX.IntrinsicElements['mesh'];
 }
 
-function ColoredBox({rect, thickness, meshProps}: ColoredBoxProps) {
+function ColoredBox({rect, thickness, depth, meshProps}: ColoredBoxProps) {
   const { size: { width, height } } = useThree();
   const widthGeometry = useMemo(() => (widthRect(rect) - thickness)/ width  , [rect, width]);
   const heightGeometry = useMemo(() => (heightRect(rect) - thickness)/ height , [rect, height]);
@@ -25,7 +26,7 @@ function ColoredBox({rect, thickness, meshProps}: ColoredBoxProps) {
      }
       {...meshProps}
     >
-      <boxGeometry args={[widthGeometry, heightGeometry, 0.1]} />
+      <boxGeometry args={[widthGeometry, heightGeometry, depth]} />
       <meshStandardMaterial color={rect.color} />
     </mesh>
   )

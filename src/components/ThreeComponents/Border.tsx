@@ -6,17 +6,18 @@ import { CustomRect, heightRect, widthRect, centerRect } from "../../utils";
 interface BorderProps {
   rect: CustomRect;
   thickness: number;
+  depth: number;
   meshProps?: JSX.IntrinsicElements['mesh'];
 }
 
 const material = new THREE.MeshStandardMaterial( {color: "black"} );
 
-function Border({rect, thickness, meshProps}: BorderProps) {
+function Border({rect, thickness, depth, meshProps}: BorderProps) {
   const { size: { width, height } } = useThree();
   const thicknessWidth = useMemo(() => thickness/width , [thickness, width]);
   const thicknessHeight = useMemo(() => thickness/height , [thickness, height]);
-  const widthGeometry = useMemo(() => new THREE.BoxGeometry( widthRect(rect)/ width, thicknessHeight, 0.1 ) , [rect, width, thicknessHeight]);
-  const heightGeometry = useMemo(() => new THREE.BoxGeometry( thicknessWidth, heightRect(rect) / height, 0.1 ) , [rect, height, thicknessWidth]);
+  const widthGeometry = useMemo(() => new THREE.BoxGeometry( widthRect(rect)/ width, thicknessHeight, depth ) , [rect, width, thicknessHeight, depth]);
+  const heightGeometry = useMemo(() => new THREE.BoxGeometry( thicknessWidth, heightRect(rect) / height, depth ) , [rect, height, thicknessWidth, depth]);
   const [x, y] = useMemo(() => centerRect(rect), [rect]);
   return (
     <>

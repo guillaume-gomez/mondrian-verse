@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 
@@ -15,11 +15,13 @@ interface MondrianThreeJsProps {
 }
 
 function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
+  const [depth, setDepth] = useState<number>(0.1);
   return (
+     <>
      <Canvas  camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }} style={{background: "#191D24", width, height }}>
-        <Borders rects={rects} thickness={thickness} />
+        <Borders rects={rects} thickness={thickness} depth={depth} />
         {
-          rects.map((rect, index) => <ColoredBox key={index} rect={rect} thickness={thickness} />)
+          rects.map((rect, index) => <ColoredBox key={index} rect={rect} thickness={thickness} depth={depth} />)
         }
         {/*
         <axesHelper args={[2]} />
@@ -29,6 +31,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         <directionalLight position={[0, 0, 5]} intensity={0.5} />
     <OrbitControls />
   </Canvas>
+  </>
   );
 }
 
