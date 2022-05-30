@@ -15,13 +15,18 @@ interface MondrianThreeJsProps {
 }
 
 function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
-  const [depth, setDepth] = useState<number>(0.1);
+  const [depthColoredBox, setDepthColoredBox] = useState<number>(0.1);
+  const [depthBorder, setDepthBorder] = useState<number>(0.1);
+
+  // vue explode
+  // vue border plus grande
+  // vue de l'algo 3D
   return (
      <>
      <Canvas  camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }} style={{background: "#191D24", width, height }}>
-        <Borders rects={rects} thickness={thickness} depth={depth} />
+        <Borders rects={rects} thickness={thickness} depth={depthBorder} />
         {
-          rects.map((rect, index) => <ColoredBox key={index} rect={rect} thickness={thickness} depth={depth} />)
+          rects.map((rect, index) => <ColoredBox key={index} rect={rect} thickness={thickness} depth={depthColoredBox} />)
         }
         {/*
         <axesHelper args={[2]} />
