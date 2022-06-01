@@ -27,7 +27,7 @@ function ColoredBox({rect, thickness, depth, meshProps}: ColoredBoxProps) {
       {...meshProps}
     >
       <boxGeometry args={[widthGeometry, heightGeometry, depth]} />
-      <meshStandardMaterial color={rect.color} />
+      <meshStandardMaterial color={rect.color} wireframe={false} />
     </mesh>
   )
 }
