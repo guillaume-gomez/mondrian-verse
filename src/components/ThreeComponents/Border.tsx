@@ -10,14 +10,14 @@ interface BorderProps {
   meshProps?: JSX.IntrinsicElements['mesh'];
 }
 
-const material = new THREE.MeshStandardMaterial( {color: "black"} );
+const material = new THREE.MeshStandardMaterial( {color: "black", wireframe: false} );
 
 function Border({rect, thickness, depth, meshProps}: BorderProps) {
   const { size: { width, height } } = useThree();
   const thicknessWidth = useMemo(() => thickness/width , [thickness, width]);
   const thicknessHeight = useMemo(() => thickness/height , [thickness, height]);
-  const widthGeometry = useMemo(() => new THREE.BoxGeometry( widthRect(rect)/ width, thicknessHeight, depth ) , [rect, width, thicknessHeight, depth]);
-  const heightGeometry = useMemo(() => new THREE.BoxGeometry( thicknessWidth, heightRect(rect) / height, depth ) , [rect, height, thicknessWidth, depth]);
+  const widthGeometry = useMemo(() => new THREE.BoxGeometry( (thickness +widthRect(rect))/ width, thicknessHeight, depth ) , [rect, width, thicknessHeight, depth]);
+  const heightGeometry = useMemo(() => new THREE.BoxGeometry( thicknessWidth, (-thickness + heightRect(rect)) / height, depth ) , [rect, height, thicknessWidth, depth]);
   const [x, y] = useMemo(() => centerRect(rect), [rect]);
   return (
     <>
