@@ -30,7 +30,7 @@ function App() {
   // adding generate create a pleaseant glitch :p
 
   useEffect(() => {
-    if(windowX != 0 && windowX <= width) {
+    if(windowX !== 0 && windowX <= width) {
       setWidth(windowX - 50);
       setWidth(windowX - 50);
     }
@@ -87,7 +87,7 @@ function App() {
               </label>
             </div>
             <button className="btn btn-secondary btn-sm" onClick={resetDefaultValues}> Set Default Values</button>
-            <div className="flex flex-row self-end">
+            <div className="flex flex-row self-end tooltip"  data-tip="Screenshot is not possible in 3D mode">
               <a ref={refSave} className={`btn btn-accent ${mode === "3d" ? "btn-disabled" : ""}`} onClick={saveImage}>Save</a>
             </div>
           </div>
