@@ -58,7 +58,6 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
     switch(vizualisation) {
       case "no-bordered":
       case "bordered":
-      case "cubist":
       case "basic":
       default: {
         /* -0.5 and 0.5 in position are here to center the shape*/
@@ -70,6 +69,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       }
       case "randomZ": {
         /* -0.5 and 0.5 in position are here to center the shape*/
+        console.log("(", (rect.x1 + x)/ width, ", ", -(rect.y1 +y)/height, ")")
         return [
           (rect.x1 + x)/ width -0.5,
           -(rect.y1 +y)/height + 0.5,
@@ -77,7 +77,15 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         ]
       }
       case "explode":{
-        return [Math.random(), Math.random(), 0];
+        const middleScreenX = (width/2);
+        const middleScreenY = (height/2);
+        const vx = ((rect.x1 + x) - middleScreenX);
+        const vy = ((rect.y1 + y) - middleScreenY);
+        console.log("(", vx, ", ", vy, ")")
+        return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y)/height + 0.5, randomBetween(-0.01,0.01)];
+      }
+      case "cubist": {
+        return [0,0,0]
       }
     }
   }
@@ -97,10 +105,10 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
               />
             ))
           }
-          {/*
-          <axesHelper args={[2]} />
+
+{/*          <axesHelper args={[2]} />
           <gridHelper/>
-          */}
+*/}
           <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
           <directionalLight position={[0, 0, 5]} intensity={0.5} />
       <OrbitControls />
