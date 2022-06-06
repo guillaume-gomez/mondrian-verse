@@ -87,7 +87,10 @@ function App() {
               </label>
             </div>
             <button className="btn btn-secondary btn-sm" onClick={resetDefaultValues}> Set Default Values</button>
-            <div className="flex flex-row self-end tooltip"  data-tip="Screenshot is not possible in 3D mode">
+            <div
+              className={`flex flex-row self-end ${mode === "3d" ? "tooltip" : ""}`}
+              data-tip={mode === "3d" ? "Screenshot is not possible in 3D mode" : ""}
+            >
               <a ref={refSave} className={`btn btn-accent ${mode === "3d" ? "btn-disabled" : ""}`} onClick={saveImage}>Save</a>
             </div>
           </div>
