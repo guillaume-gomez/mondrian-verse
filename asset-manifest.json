@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/mondrian-verse/static/css/main.33e93257.css",
-    "main.js": "/mondrian-verse/static/js/main.f9bc53c5.js",
+    "main.js": "/mondrian-verse/static/js/main.61754c8d.js",
     "static/js/787.21aac90f.chunk.js": "/mondrian-verse/static/js/787.21aac90f.chunk.js",
     "index.html": "/mondrian-verse/index.html",
     "main.33e93257.css.map": "/mondrian-verse/static/css/main.33e93257.css.map",
-    "main.f9bc53c5.js.map": "/mondrian-verse/static/js/main.f9bc53c5.js.map",
+    "main.61754c8d.js.map": "/mondrian-verse/static/js/main.61754c8d.js.map",
     "787.21aac90f.chunk.js.map": "/mondrian-verse/static/js/787.21aac90f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.33e93257.css",
-    "static/js/main.f9bc53c5.js"
+    "static/js/main.61754c8d.js"
   ]
 }
