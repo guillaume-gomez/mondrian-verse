@@ -1,18 +1,26 @@
 import { useState } from 'react'; 
 import { CustomRect, heightRect, widthRect, randInt } from "../utils";
 
+export const BlackColor = "#2b2b2b";
+export const RedColor = "#e90018";
+export const BlueColor = "#0e63b7";
+export const YellowColor = "#f9da00";
+export const WhiteColor = "white";
+
+export type possibleColorsType = "#2b2b2b"|"#e90018"|"#0e63b7"|"#f9da00"|"white";
+
 const possibleColors = [
-    '#2b2b2b',
-    '#e90018',
-    '#0e63b7',
-    '#f9da00'
+    BlackColor,
+    RedColor,
+    BlueColor,
+    YellowColor
 ]
 
 const defaultColors = [
-    'white',
-    'white',
-    'white',
-    'white',
+    WhiteColor,
+    WhiteColor,
+    WhiteColor,
+    WhiteColor,
     ...possibleColors
 ];
 
@@ -96,20 +104,17 @@ function useMondrian() {
       hasBlack ?
         defaultColors :
         [
-          'white',
-          'white',
-          'white',
-          'white',
-          '#e90018',
-          '#0e63b7',
-          '#f9da00'
+          WhiteColor,
+          WhiteColor,
+          WhiteColor,
+          WhiteColor,
+          RedColor,
+          BlueColor,
+          YellowColor
         ]
    ;
     setColors(newColors);
   }
-
-
-
 
   return { generate, rects, setHasBlack };
 

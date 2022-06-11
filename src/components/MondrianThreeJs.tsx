@@ -5,6 +5,7 @@ import { OrbitControls } from '@react-three/drei';
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
 import { CustomRect, centerRect } from "../utils";
+import { possibleColorsType, BlackColor, RedColor, BlueColor, YellowColor, WhiteColor } from "../hooks/useMondrian";
 
 interface MondrianThreeJsProps {
   width: number;
@@ -17,13 +18,34 @@ function randomBetween(min: number, max: number) : number {
   return Math.random() * (max - min + 1) + min;
 }
 
-type visualizationType = "basic"|"no-bordered"|"bordered"|"explode"|"cubist"|"randomZ";
+type visualizationType = "basic"|"no-bordered"|"bordered"| "color-bordered" | "explode"|"cubist"|"randomZ";
 
 function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
   const [depthColoredBox, setDepthColoredBox] = useState<number>(0.1);
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
+
+  function computeBorderByColor(color: possibleColorsType) : number {
+    if(vizualisation !== "color-bordered") {
+      return 0.1;
+    }
+
+    switch(color) {
+      case BlackColor:
+        return 0.3;
+      case RedColor:
+        return 0.2;
+      case BlueColor:
+        return 0.5;
+      case YellowColor:
+        return 0.6;
+      case WhiteColor:
+        return 0.05;
+      default:
+        return 0.1;
+    }
+  }
 
   useEffect(() => {
     switch(vizualisation) {
@@ -40,6 +62,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       }
       case "cubist":
       case "basic":
+      case "color-bordered":
       default:
       {
         setDepthBorder(0.1);
@@ -57,6 +80,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
     const [x, y] = centerRect(rect);
     switch(vizualisation) {
       case "no-bordered":
+      case "color-bordered":
       case "bordered":
       case "basic":
       default: {
@@ -100,7 +124,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
                 key={index}
                 rect={rect}
                 thickness={thickness}
-                depth={depthColoredBox}
+                depth={computeBorderByColor(rect.color as possibleColorsType)}
                 meshProps={{position: computePosition(rect)}}
               />
             ))
@@ -118,6 +142,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       <option disabled selected>Pick your vizualisation</option>
       <option value="basic">Basic</option>
       <option value="bordered">Bordered</option>
+      <option value="color-bordered">Color Bordered</option>
       <option value="no-bordered">No Bordered</option>
       <option value="randomZ">Random Z axis</option>
       <option value="explode">Explode</option>
