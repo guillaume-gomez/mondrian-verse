@@ -18,16 +18,15 @@ function randomBetween(min: number, max: number) : number {
   return Math.random() * (max - min + 1) + min;
 }
 
-type visualizationType = "basic"|"no-bordered"|"bordered"| "color-bordered" | "explode"|"cubist"|"randomZ";
+type visualizationType = "basic"|"no-bordered"|"bordered"| "color-bordered" | "color-bordered-2" | "explode"|"cubist"|"randomZ";
 
 function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
-  const [depthColoredBox, setDepthColoredBox] = useState<number>(0.1);
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
 
   function computeBorderByColor(color: possibleColorsType) : number {
-    if(vizualisation !== "color-bordered") {
+    if((vizualisation !== "color-bordered") && (vizualisation !== "color-bordered-2")) {
       return 0.1;
     }
 
@@ -63,6 +62,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       case "cubist":
       case "basic":
       case "color-bordered":
+      case "color-bordered-2":
       default:
       {
         setDepthBorder(0.1);
@@ -76,7 +76,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
     }
   }, [vizualisation, setDepthBorder]);
 
-  function computePosition(rect: CustomRect) : [number, number, number] {
+  function computePosition(rect: CustomRect, depth: number) : [number, number, number] {
     const [x, y] = centerRect(rect);
     switch(vizualisation) {
       case "no-bordered":
@@ -105,8 +105,14 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         const middleScreenY = (height/2);
         const vx = ((rect.x1 + x) - middleScreenX);
         const vy = ((rect.y1 + y) - middleScreenY);
-        console.log("(", vx, ", ", vy, ")")
         return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y)/height + 0.5, randomBetween(-0.01,0.01)];
+      }
+      case "color-bordered-2": {
+        return [
+          (rect.x1 + x)/ width -0.5,
+          -(rect.y1 +y)/height + 0.5,
+          depth/2 - depthBorder/2
+        ]
       }
       case "cubist": {
         return [0,0,0]
@@ -119,15 +125,18 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
     <Canvas  camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }} style={{background: "#191D24", width, height }}>
           { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
           {
-            rects.map((rect, index) => (
-              <ColoredBox
-                key={index}
-                rect={rect}
-                thickness={thickness}
-                depth={computeBorderByColor(rect.color as possibleColorsType)}
-                meshProps={{position: computePosition(rect)}}
-              />
-            ))
+            rects.map((rect, index) => {
+              const depth = computeBorderByColor(rect.color as possibleColorsType);
+              return (
+                <ColoredBox
+                  key={index}
+                  rect={rect}
+                  thickness={thickness}
+                  depth={depth}
+                  meshProps={{position: computePosition(rect, depth)}}
+                />
+              );
+            })
           }
 
 {/*          <axesHelper args={[2]} />
@@ -143,6 +152,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       <option value="basic">Basic</option>
       <option value="bordered">Bordered</option>
       <option value="color-bordered">Color Bordered</option>
+      <option value="color-bordered-2">Color Bordered 2</option>
       <option value="no-bordered">No Bordered</option>
       <option value="randomZ">Random Z axis</option>
       <option value="explode">Explode</option>
