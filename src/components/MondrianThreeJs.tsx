@@ -18,7 +18,7 @@ function randomBetween(min: number, max: number) : number {
   return Math.random() * (max - min + 1) + min;
 }
 
-type visualizationType = "basic"|"no-bordered"|"bordered"| "color-bordered" | "color-bordered-2" | "explode"|"cubist"|"randomZ";
+type visualizationType = "basic"|"bordered"| "color-bordered"|"explode"|"cubist"|"randomZ";
 
 function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
@@ -26,21 +26,21 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
 
   function computeBorderByColor(color: possibleColorsType) : number {
-    if((vizualisation !== "color-bordered") && (vizualisation !== "color-bordered-2")) {
+    if((vizualisation !== "color-bordered") && (vizualisation !== "cubist")) {
       return 0.1;
     }
 
     switch(color) {
       case BlackColor:
-        return 0.3;
+        return 0.1;
       case RedColor:
-        return 0.2;
+        return 0.3;
       case BlueColor:
-        return 0.5;
+        return 0.4;
       case YellowColor:
-        return 0.6;
+        return 0.5;
       case WhiteColor:
-        return 0.05;
+        return 0.2;
       default:
         return 0.1;
     }
@@ -48,8 +48,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
 
   useEffect(() => {
     switch(vizualisation) {
-      case "randomZ":
-      case "no-bordered": {
+      case "randomZ": {
         setHasBorder(false);
         break;
       }
@@ -62,7 +61,6 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       case "cubist":
       case "basic":
       case "color-bordered":
-      case "color-bordered-2":
       default:
       {
         setDepthBorder(0.1);
@@ -79,7 +77,6 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   function computePosition(rect: CustomRect, depth: number) : [number, number, number] {
     const [x, y] = centerRect(rect);
     switch(vizualisation) {
-      case "no-bordered":
       case "color-bordered":
       case "bordered":
       case "basic":
@@ -107,15 +104,12 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         const vy = ((rect.y1 + y) - middleScreenY);
         return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y)/height + 0.5, randomBetween(-0.01,0.01)];
       }
-      case "color-bordered-2": {
+      case "cubist": {
         return [
           (rect.x1 + x)/ width -0.5,
           -(rect.y1 +y)/height + 0.5,
           depth/2 - depthBorder/2
         ]
-      }
-      case "cubist": {
-        return [0,0,0]
       }
     }
   }
@@ -147,17 +141,21 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       <OrbitControls />
     </Canvas>
     <div className="flex flex-col gap-4">
-     <select className="select w-full max-w-xs" onChange={(event) => setVizualisation(event.target.value as visualizationType)}>
-      <option disabled selected>Pick your vizualisation</option>
-      <option value="basic">Basic</option>
-      <option value="bordered">Bordered</option>
-      <option value="color-bordered">Color Bordered</option>
-      <option value="color-bordered-2">Color Bordered 2</option>
-      <option value="no-bordered">No Bordered</option>
-      <option value="randomZ">Random Z axis</option>
-      <option value="explode">Explode</option>
-      <option value="cubist">Cubist</option>
-    </select>
+      <select className="select w-full max-w-xs" onChange={(event) => setVizualisation(event.target.value as visualizationType)}>
+        <option disabled selected>Pick your vizualisation</option>
+        <option value="basic">Basic</option>
+        <option value="bordered">Bordered</option>
+        <option value="color-bordered">Color Bordered</option>
+        <option value="randomZ">Random Z axis</option>
+        <option value="explode">Explode</option>
+        <option value="cubist">Cubist</option>
+      </select>
+      <div className="form-control">
+        <label className="label cursor-pointer">
+          <span className="label-text">with Frame ?</span>
+          <input type="checkbox" className="toggle" checked={hasBorder} onChange={() => setHasBorder(!hasBorder)} />
+        </label>
+      </div>
     </div>
   </>
   );
