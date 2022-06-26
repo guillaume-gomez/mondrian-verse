@@ -33,6 +33,7 @@ function App() {
   useEffect(() => {
     if(canvasContainerRef.current && canvasContainerRef.current.offsetWidth <= width) {
       setWidth(canvasContainerRef.current.offsetWidth - 50);
+      setHeight(canvasContainerRef.current.offsetWidth - 50);
     }
   }, [innerWidth, canvasContainerRef])
 
