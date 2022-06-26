@@ -123,27 +123,23 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   return (
   <>
     <Canvas  camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }} style={{background: "#191D24", width, height }}>
-          { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
-          {
-            rects.map((rect, index) => {
-              const depth = computeBorderByColor(rect.color as possibleColorsType);
-              return (
-                <ColoredBox
-                  key={index}
-                  rect={rect}
-                  thickness={thickness}
-                  depth={depth}
-                  meshProps={{position: computePosition(rect, depth)}}
-                />
-              );
-            })
-          }
-
-{/*          <axesHelper args={[2]} />
-          <gridHelper/>
-*/}
-          <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
-          <directionalLight position={[0, 0, 5]} intensity={0.5} />
+      { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
+      {
+        rects.map((rect, index) => {
+          const depth = computeBorderByColor(rect.color as possibleColorsType);
+          return (
+            <ColoredBox
+              key={index}
+              rect={rect}
+              thickness={thickness}
+              depth={depth}
+              meshProps={{position: computePosition(rect, depth)}}
+            />
+          );
+        })
+      }
+      <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
+      <directionalLight position={[0, 0, 5]} intensity={0.5} />
       <OrbitControls />
     </Canvas>
     <div className="flex flex-col gap-4">

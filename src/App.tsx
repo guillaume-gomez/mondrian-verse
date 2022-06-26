@@ -61,7 +61,7 @@ function App() {
           <NavBar githubUrl={githubUrl} />
       </header>
       <div className="flex flex-col justify-center items-center gap-5 py-5">
-          <div className="form-control">
+          <div className="form-control gap-2">
               <label className="label cursor-pointer">
               <span className="label-text">3D Version</span>
               <input type="checkbox" className="toggle" checked={mode === "3d"} onChange={() => setMode(mode === "3d" ? "2d" : "3d")} />
@@ -81,7 +81,7 @@ function App() {
             <SliderWithLabel label="Width" min={200} max={1200} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
             <SliderWithLabel label="Height" min={200} max={1200} value={height} step={5} onChange={(value) => setHeight(parseInt(value))}/>
             <div className="form-control">
-              <label className="label cursor-pointer">
+              <label className="label cursor-pointer gap-2">
                 <span className="label-text">Has Black as possible colors</span>
                 <input type="checkbox" className="toggle" checked={enableBlack} onChange={() => {setHasBlack(!enableBlack); setEnableBlack(!enableBlack)}} />
               </label>
