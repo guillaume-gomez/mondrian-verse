@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-[data-theme="mytheme"] .btn, .select {
+[data-theme="mytheme"] .btn, .select, .card {
   border-width: 6px;
   border-color: black;
 }

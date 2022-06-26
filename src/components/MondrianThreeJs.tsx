@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { useFullscreen } from "rooks";
 import { OrbitControls } from '@react-three/drei';
-
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
 import { CustomRect, centerRect } from "../utils";
@@ -24,6 +24,10 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
+  const {
+    toggle,
+    element,
+  } = useFullscreen();
 
   function computeBorderByColor(color: possibleColorsType) : number {
     if((vizualisation !== "color-bordered") && (vizualisation !== "color-bordered-2")) {
@@ -93,7 +97,6 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       }
       case "randomZ": {
         /* -0.5 and 0.5 in position are here to center the shape*/
-        console.log("(", (rect.x1 + x)/ width, ", ", -(rect.y1 +y)/height, ")")
         return [
           (rect.x1 + x)/ width -0.5,
           -(rect.y1 +y)/height + 0.5,
@@ -121,8 +124,13 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   }
 
   return (
-  <>
-    <Canvas  camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }} style={{background: "#191D24", width, height }}>
+  <div className="flex flex-col justify-center items-center gap-2">
+    <Canvas
+      camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }}
+      style={{width, height }}
+      onDoubleClick={e => toggle(e.target as any)}
+    >
+      <color attach="background" args={[0x595959]} />
       { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
       {
         rects.map((rect, index) => {
@@ -155,7 +163,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       <option value="cubist">Cubist</option>
     </select>
     </div>
-  </>
+  </div>
   );
 }
 
