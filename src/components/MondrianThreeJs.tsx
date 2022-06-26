@@ -105,7 +105,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         const middleScreenY = (height/2);
         const vx = ((rect.x1 + x) - middleScreenX);
         const vy = ((rect.y1 + y) - middleScreenY);
-        return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y)/height + 0.5, randomBetween(-0.01,0.01)];
+        return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y + vy)/height + 0.5, randomBetween(-0.01,0.01)];
       }
       case "color-bordered-2": {
         return [
