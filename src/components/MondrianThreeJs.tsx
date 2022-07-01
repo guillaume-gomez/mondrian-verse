@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { useFullscreen } from "rooks";
 import { OrbitControls } from '@react-three/drei';
-
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
 import { CustomRect, centerRect } from "../utils";
@@ -24,6 +24,10 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
+  const {
+    toggle,
+    element,
+  } = useFullscreen();
 
   function computeBorderByColor(color: possibleColorsType) : number {
     if((vizualisation !== "color-bordered") && (vizualisation !== "cubist")) {
@@ -90,7 +94,6 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       }
       case "randomZ": {
         /* -0.5 and 0.5 in position are here to center the shape*/
-        console.log("(", (rect.x1 + x)/ width, ", ", -(rect.y1 +y)/height, ")")
         return [
           (rect.x1 + x)/ width -0.5,
           -(rect.y1 +y)/height + 0.5,
@@ -102,7 +105,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         const middleScreenY = (height/2);
         const vx = ((rect.x1 + x) - middleScreenX);
         const vy = ((rect.y1 + y) - middleScreenY);
-        return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y)/height + 0.5, randomBetween(-0.01,0.01)];
+        return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y + vy)/height + 0.5, randomBetween(-0.01,0.01)];
       }
       case "cubist": {
         return [
@@ -115,29 +118,30 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   }
 
   return (
-  <>
-    <Canvas  camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }} style={{background: "#191D24", width, height }}>
-          { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
-          {
-            rects.map((rect, index) => {
-              const depth = computeBorderByColor(rect.color as possibleColorsType);
-              return (
-                <ColoredBox
-                  key={index}
-                  rect={rect}
-                  thickness={thickness}
-                  depth={depth}
-                  meshProps={{position: computePosition(rect, depth)}}
-                />
-              );
-            })
-          }
-
-{/*          <axesHelper args={[2]} />
-          <gridHelper/>
-*/}
-          <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
-          <directionalLight position={[0, 0, 5]} intensity={0.5} />
+  <div className="flex flex-col justify-center items-center gap-2">
+    <Canvas
+      camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }}
+      style={{width, height }}
+      onDoubleClick={e => toggle(e.target as any)}
+    >
+      <color attach="background" args={[0x595959]} />
+      { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
+      {
+        rects.map((rect, index) => {
+          const depth = computeBorderByColor(rect.color as possibleColorsType);
+          return (
+            <ColoredBox
+              key={index}
+              rect={rect}
+              thickness={thickness}
+              depth={depth}
+              meshProps={{position: computePosition(rect, depth)}}
+            />
+          );
+        })
+      }
+      <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
+      <directionalLight position={[0, 0, 5]} intensity={0.5} />
       <OrbitControls />
     </Canvas>
     <div className="flex flex-col gap-4">
@@ -157,7 +161,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         </label>
       </div>
     </div>
-  </>
+  </div>
   );
 }
 

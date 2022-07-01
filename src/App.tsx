@@ -7,12 +7,12 @@ import NavBar from "./components/NavBar";
 import SliderWithLabel from "./components/SliderWithLabel";
 import MondrianCanvas, { ExternalActionInterface } from "./components/MondrianCanvas";
 import MondrianThreeJs from "./components/MondrianThreeJs";
-import useWindowSize from "./components/customHooks/useWindowSize";
+import { useWindowSize } from "rooks";
 
 const githubUrl = "https://github.com/guillaume-gomez/mondrian-verse";
 
 function App() {
-  const [windowX, windowY] = useWindowSize();
+  const { innerWidth } = useWindowSize();
   const [width, setWidth] = useState<number>(800);
   const [height, setHeight] = useState<number>(800);
   const [nbIterations, setNbIteration] = useState<number>(3);
@@ -21,6 +21,7 @@ function App() {
   const [mode, setMode] = useState<"2d"|"3d">("2d");
   const { generate, rects, setHasBlack } = useMondrian();
   
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
   const refSave = useRef<HTMLAnchorElement>(null);
 
@@ -30,11 +31,11 @@ function App() {
   // adding generate create a pleaseant glitch :p
 
   useEffect(() => {
-    if(windowX !== 0 && windowX <= width) {
-      setWidth(windowX - 50);
-      setWidth(windowX - 50);
+    if(canvasContainerRef.current && canvasContainerRef.current.offsetWidth <= width) {
+      setWidth(canvasContainerRef.current.offsetWidth - 50);
+      setHeight(canvasContainerRef.current.offsetWidth - 50);
     }
-  }, [windowX, windowY])
+  }, [innerWidth, canvasContainerRef])
 
   function resetDefaultValues() {
     setWidth(800);
@@ -60,20 +61,24 @@ function App() {
       <header>
           <NavBar githubUrl={githubUrl} />
       </header>
-      <div className="flex flex-col justify-center items-center gap-5 py-5">
-          <div className="form-control">
-              <label className="label cursor-pointer">
+      <div className="flex flex-col justify-center gap-5 py-5">
+        <div ref={canvasContainerRef} className="flex flex-col w-3/4 mx-auto card bg-base-300 p-2">
+          {
+            mode === "3d" ?
+            <MondrianThreeJs width={width} height={height} thickness={thickness} rects={rects} />
+            :
+            <div className="flex flex-col justify-center items-center">
+              <MondrianCanvas ref={canvasActionsRef} width={width} height={height} thickness={thickness} rects={rects} />
+            </div>
+          }
+          <div className="form-control self-end">
+              <label className="label cursor-pointer gap-2">
               <span className="label-text">3D Version</span>
               <input type="checkbox" className="toggle" checked={mode === "3d"} onChange={() => setMode(mode === "3d" ? "2d" : "3d")} />
             </label>
           </div>
-        {
-          mode === "3d" ?
-          <MondrianThreeJs width={width} height={height} thickness={thickness} rects={rects} />
-          :
-          <MondrianCanvas ref={canvasActionsRef} width={width} height={height} thickness={thickness} rects={rects} />
-        }
-        <div className="m-auto">
+        </div>
+        <div className="w-2/4 mx-auto">
           <div className="flex flex-col justify-center gap-5">
             <button className="btn btn-secondary btn-lg" onClick={() => generate(width, height, nbIterations)}> Regenerate</button>
             <SliderWithLabel label="Thickness" min={2} max={100} value={thickness} step={2} onChange={(value) => setThickness(parseInt(value))}/>
@@ -81,7 +86,7 @@ function App() {
             <SliderWithLabel label="Width" min={200} max={1200} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
             <SliderWithLabel label="Height" min={200} max={1200} value={height} step={5} onChange={(value) => setHeight(parseInt(value))}/>
             <div className="form-control">
-              <label className="label cursor-pointer">
+              <label className="label cursor-pointer gap-2">
                 <span className="label-text">Has Black as possible colors</span>
                 <input type="checkbox" className="toggle" checked={enableBlack} onChange={() => {setHasBlack(!enableBlack); setEnableBlack(!enableBlack)}} />
               </label>
