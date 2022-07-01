@@ -145,7 +145,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       <OrbitControls />
     </Canvas>
     <div className="flex flex-col gap-4">
-      <select className="select w-full max-w-xs" onChange={(event) => setVizualisation(event.target.value as visualizationType)}>
+      <select className="select w-full max-w-xs" value={vizualisation} onChange={(event) => setVizualisation(event.target.value as visualizationType)}>
         <option disabled selected>Pick your vizualisation</option>
         <option value="basic">Basic</option>
         <option value="bordered">Bordered</option>

@@ -80,8 +80,8 @@ function useMondrian() {
 
   function generate(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
     // magic number to avoid to little rects
-    const xPad = canvasWidth * 0.1;
-    const yPad = canvasHeight * 0.1;
+    const xPad = canvasWidth * 0.05;
+    const yPad = canvasHeight * 0.05;
     let accRects : CustomRect[] = [];
     generateMondrian(
        {x1: 0, y1: 0, x2: canvasWidth, y2: canvasHeight, color: "#000000"},

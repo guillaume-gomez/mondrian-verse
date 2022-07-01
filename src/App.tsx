@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     generate(width, height, nbIterations);
-  }, [/*generate*/width, height, nbIterations, thickness, enableBlack]);
+  }, [/*generate*/width, height, nbIterations, enableBlack]);
   // adding generate create a pleaseant glitch :p
 
   useEffect(() => {
