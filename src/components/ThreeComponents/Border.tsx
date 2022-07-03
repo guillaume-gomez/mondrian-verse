@@ -10,7 +10,7 @@ interface BorderProps {
   meshProps?: JSX.IntrinsicElements['mesh'];
 }
 
-const material = new THREE.MeshStandardMaterial( {color: "black"} );
+const material = new THREE.MeshStandardMaterial( { color: "black" } );
 
 function Border({rect, thickness, depth, meshProps}: BorderProps) {
   const { size: { width, height } } = useThree();
@@ -58,7 +58,7 @@ function Border({rect, thickness, depth, meshProps}: BorderProps) {
       {...meshProps}
     />
 
-     <mesh
+    <mesh
       material={material}
       geometry={heightGeometry}
       position={[
