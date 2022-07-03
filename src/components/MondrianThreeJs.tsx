@@ -31,7 +31,8 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
 
   function computeBorderByColor(color: possibleColorsType) : number {
     if((vizualisation !== "color-bordered") && (vizualisation !== "cubist")) {
-      return 0.1;
+      // Math.random to avoid z-fighting
+      return 0.1 + Math.random() * 0.001;
     }
 
     switch(color) {
@@ -46,7 +47,8 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       case WhiteColor:
         return 0.2;
       default:
-        return 0.1;
+        // Math.random to avoid z-fighting
+        return 0.1 + Math.random() * 0.001;
     }
   }
 
@@ -120,7 +122,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   return (
   <div className="flex flex-col justify-center items-center gap-2">
     <Canvas
-      camera={{ position: [-0.15, 0.15, 0.90], fov: 75 }}
+      camera={{ position: [-0.15, 0.15, 0.90], fov: 75, far: 5 }}
       style={{width, height }}
       onDoubleClick={e => toggle(e.target as any)}
     >
