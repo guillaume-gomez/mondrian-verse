@@ -84,7 +84,10 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
       case "bordered":
       case "basic":
       default: {
-        /* -0.5 and 0.5 in position are here to center the shape*/
+        /*
+          -0.5 and 0.5 in position are here to center the shape
+          Offset of 1 in z to make sure the shapes are visible
+        */
         return [
           (rect.x1 + x)/ width -0.5,
           -(rect.y1 +y)/height + 0.5,
@@ -92,11 +95,14 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
         ];
       }
       case "randomZ": {
-        /* -0.5 and 0.5 in position are here to center the shape*/
+        /*
+          -0.5 and 0.5 in position are here to center the shape
+          Offset of 1 in z to make sure the shapes are visible
+        */
         return [
           (rect.x1 + x)/ width -0.5,
           -(rect.y1 +y)/height + 0.5,
-          randomBetween(-0.01,0.01)
+          randomBetween(-0.01,0.01) - 1
         ]
       }
       case "explode":{
@@ -104,7 +110,11 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
         const middleScreenY = (height/2);
         const vx = ((rect.x1 + x) - middleScreenX);
         const vy = ((rect.y1 + y) - middleScreenY);
-        return [(rect.x1 + x + vx)/ width -0.5, -(rect.y1 + y + vy)/height + 0.5, randomBetween(-0.01,0.01)];
+        //Offset of 1 in z to make sure the shapes are visible
+        return [
+          (rect.x1 + x + vx)/ width -0.5,
+          -(rect.y1 + y + vy)/height + 0.5,
+          randomBetween(-0.01,0.01) -1 ];
       }
       case "cubist": {
         return [
