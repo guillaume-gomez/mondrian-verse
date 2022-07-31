@@ -62,7 +62,7 @@ function App() {
           <NavBar githubUrl={githubUrl} />
       </header>
       <div className="flex flex-col justify-center gap-5 py-5">
-        <div ref={canvasContainerRef} className="flex flex-col w-3/4 mx-auto card bg-base-300 p-2">
+        <div ref={canvasContainerRef} className="flex flex-col w-3/4 mx-auto card bg-base-300 p-2" style={{overflow: "visible"}}>
           {
             mode === "3d" ?
             <MondrianThreeJs width={width} height={height} thickness={thickness} rects={rects} />

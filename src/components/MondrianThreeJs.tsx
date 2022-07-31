@@ -123,9 +123,9 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   return (
   <div className="flex flex-col justify-center items-center gap-2">
     <Canvas
-      camera={{ position: [-0.15, 0.15, 2], fov: 75, far: 5 }}
+      camera={{ position: [-0.15, 0.15, 1.5], fov: 75, far: 5 }}
       dpr={window.devicePixelRatio}
-      style={{width, height }}
+      style={{width, height}}
       onDoubleClick={e => toggle(e.target as any)}
     >
       <color attach="background" args={[0x595959]} />
@@ -148,18 +148,19 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       <directionalLight position={[0, 0, 5]} intensity={0.5} />
       <OrbitControls makeDefault />
     </Canvas>
-    <div className="flex flex-col gap-4">
-      <VisualizationSelect visualization={vizualisation} onChange={(vizualisation) => setVizualisation(vizualisation)} />
-      <HasBorder  hasBorder={hasBorder} onChange={setHasBorder}/>
-      <div>
-        <p>Controls</p>
-        <ul>
-          <li>Double click to full screen</li>
-          <li>Click to rotate the camera</li>
-          <li>Scroll Wheel to zoom in/out</li>
+    <div className="flex flex-col gap-4" style={{width}}>
+      <div className="flex flex-col md:flex-row justify-between">
+        <VisualizationSelect visualization={vizualisation} onChange={(vizualisation) => setVizualisation(vizualisation)} />
+        <HasBorder  hasBorder={hasBorder} onChange={setHasBorder}/>
+      </div>
+      <div className="dropdown dropdown-hover" style={{zIndex: 2}}>
+        <label tabIndex={0} className="btn btn-sm">Help ?</label>
+        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+          <li>-Double click to full screen</li>
+          <li>-Click to rotate the camera</li>
+          <li>-Scroll Wheel to zoom in/out</li>
         </ul>
       </div>
-
     </div>
   </div>
   );
