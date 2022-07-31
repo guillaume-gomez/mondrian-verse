@@ -73,6 +73,7 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
       ref={refCanvas}
       width={width}
       height={height}
+      style={{background:"#797979"}}
       onDoubleClick={(event) => toggleFullScreen(event.target)}
     />
   );

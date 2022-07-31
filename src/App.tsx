@@ -25,11 +25,7 @@ function App() {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
   const refSave = useRef<HTMLAnchorElement>(null);
-    const {
-    toggle,
-    isFullscreen,
-    element,
-  } = useFullscreen();
+  const { toggle } = useFullscreen();
 
   useEffect(() => {
     generate(width, height, nbIterations);

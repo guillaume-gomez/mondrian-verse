@@ -131,10 +131,14 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
     <Canvas
       camera={{ position: [-0.15, 0.15, 1.5], fov: 75, far: 5 }}
       dpr={window.devicePixelRatio}
-      style={{width, height}}
-      onDoubleClick={(event) => toggleFullScreen(event.target)}
+      style={{width, height }}
+      onDoubleClick={(event: any) => {
+        // trick to override canvas background color
+        event.target.style.background="#313131";
+        toggleFullScreen(event.target)
+      }}
     >
-      <color attach="background" args={[0x595959]} />
+      <color attach="background" args={[0x797979]} />
       { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
       {
         rects.map((rect, index) => {
