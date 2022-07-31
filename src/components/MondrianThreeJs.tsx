@@ -163,13 +163,31 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
         <VisualizationSelect visualization={vizualisation} onChange={(vizualisation) => setVizualisation(vizualisation)} />
         <HasBorder  hasBorder={hasBorder} onChange={setHasBorder}/>
       </div>
-      <div className="dropdown dropdown-hover" style={{zIndex: 2}}>
+      <div className="dropdown dropdown-hover">
         <label tabIndex={0} className="btn btn-sm">Help ?</label>
-        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-          <li>-Double click to full screen</li>
-          <li>-Click to rotate the camera</li>
-          <li>-Scroll Wheel to zoom in/out</li>
-        </ul>
+        <div tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box list-disc">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>Controls</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <th>Left Click </th>
+                <td>Rotate Camera</td>
+              </tr>
+
+              <tr>
+                <th>Wheel Scroll</th>
+                <td>Zoom In/Out</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

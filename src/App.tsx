@@ -69,7 +69,7 @@ function App() {
           className="flex flex-col w-3/4 mx-auto card bg-base-300 p-2"
           style={{overflow: "visible"}}
         >
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center gap-3">
             { mode === "3d" ?
               <MondrianThreeJs
                 width={width}
@@ -88,6 +88,7 @@ function App() {
                 toggleFullScreen={(target) => toggle(target as any)}
               />
             }
+            <p className="text-xs italic">Double click on the canvas to go full screen</p>
           </div>
           <div className="form-control self-end">
               <label className="label cursor-pointer gap-2">
