@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { format } from "date-fns";
+import { useFullscreen } from "rooks";
 import './App.css';
 import useMondrian from "./hooks/useMondrian";
 import Footer from "./components/Footer";
@@ -24,6 +25,11 @@ function App() {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
   const refSave = useRef<HTMLAnchorElement>(null);
+    const {
+    toggle,
+    isFullscreen,
+    element,
+  } = useFullscreen();
 
   useEffect(() => {
     generate(width, height, nbIterations);
@@ -59,18 +65,34 @@ function App() {
   return (
     <div>
       <header>
-          <NavBar githubUrl={githubUrl} />
+        <NavBar githubUrl={githubUrl} />
       </header>
       <div className="flex flex-col justify-center gap-5 py-5">
-        <div ref={canvasContainerRef} className="flex flex-col w-3/4 mx-auto card bg-base-300 p-2" style={{overflow: "visible"}}>
-          {
-            mode === "3d" ?
-            <MondrianThreeJs width={width} height={height} thickness={thickness} rects={rects} />
-            :
-            <div className="flex flex-col justify-center items-center">
-              <MondrianCanvas ref={canvasActionsRef} width={width} height={height} thickness={thickness} rects={rects} />
-            </div>
-          }
+        <div
+          ref={canvasContainerRef}
+          className="flex flex-col w-3/4 mx-auto card bg-base-300 p-2"
+          style={{overflow: "visible"}}
+        >
+          <div className="flex flex-col justify-center items-center">
+            { mode === "3d" ?
+              <MondrianThreeJs
+                width={width}
+                height={height}
+                thickness={thickness}
+                rects={rects}
+                toggleFullScreen={(target) => toggle(target as any)}
+              />
+              :
+              <MondrianCanvas
+                ref={canvasActionsRef}
+                width={width}
+                height={height}
+                thickness={thickness}
+                rects={rects}
+                toggleFullScreen={(target) => toggle(target as any)}
+              />
+            }
+          </div>
           <div className="form-control self-end">
               <label className="label cursor-pointer gap-2">
               <span className="label-text">3D Version</span>

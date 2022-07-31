@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useFullscreen } from "rooks";
 import { OrbitControls } from '@react-three/drei';
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
@@ -14,6 +13,7 @@ interface MondrianThreeJsProps {
   height: number;
   thickness: number;
   rects: CustomRect[];
+  toggleFullScreen: (target: EventTarget) => void;
 }
 
 function randomBetween(min: number, max: number) : number {
@@ -21,14 +21,10 @@ function randomBetween(min: number, max: number) : number {
 }
 
 
-function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
+function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : MondrianThreeJsProps ): React.ReactElement {
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
-  const {
-    toggle,
-    element,
-  } = useFullscreen();
 
   function computeBorderByColor(color: possibleColorsType) : number {
     if((vizualisation !== "color-bordered") && (vizualisation !== "cubist")) {
@@ -126,7 +122,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       camera={{ position: [-0.15, 0.15, 1.5], fov: 75, far: 5 }}
       dpr={window.devicePixelRatio}
       style={{width, height}}
-      onDoubleClick={e => toggle(e.target as any)}
+      onDoubleClick={(event) => toggleFullScreen(event.target)}
     >
       <color attach="background" args={[0x595959]} />
       { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }

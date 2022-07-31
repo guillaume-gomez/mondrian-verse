@@ -7,13 +7,14 @@ interface MondrianCanvasProps {
   height: number;
   thickness: number;
   rects: CustomRect[];
+  toggleFullScreen: (target: EventTarget) => void;
 }
 
 export interface ExternalActionInterface {
   getImage: () => string |null ;
 }
 
-const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width, height, thickness, rects}, ref) => {
+const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width, height, thickness, rects, toggleFullScreen}, ref) => {
   const refCanvas = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     function drawBorder(context : CanvasRenderingContext2D) {
@@ -68,7 +69,12 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
   }
 
   return (
-    <canvas ref={refCanvas} width={width} height={height}/>
+    <canvas
+      ref={refCanvas}
+      width={width}
+      height={height}
+      onDoubleClick={(event) => toggleFullScreen(event.target)}
+    />
   );
 });
 
