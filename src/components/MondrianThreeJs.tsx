@@ -4,6 +4,8 @@ import { useFullscreen } from "rooks";
 import { OrbitControls } from '@react-three/drei';
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
+import VisualizationSelect, { visualizationType } from "./VisualizationSelect";
+import HasBorder from "./HasBorderInput";
 import { CustomRect, centerRect } from "../utils";
 import { possibleColorsType, BlackColor, RedColor, BlueColor, YellowColor, WhiteColor } from "../hooks/useMondrian";
 
@@ -18,7 +20,6 @@ function randomBetween(min: number, max: number) : number {
   return Math.random() * (max - min + 1) + min;
 }
 
-type visualizationType = "basic"|"bordered"| "color-bordered"|"explode"|"cubist"|"randomZ";
 
 function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
@@ -122,7 +123,8 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   return (
   <div className="flex flex-col justify-center items-center gap-2">
     <Canvas
-      camera={{ position: [-0.15, 0.15, 0.90], fov: 75, far: 5 }}
+      camera={{ position: [-0.15, 0.15, 2], fov: 75, far: 5 }}
+      dpr={window.devicePixelRatio}
       style={{width, height }}
       onDoubleClick={e => toggle(e.target as any)}
     >
@@ -144,24 +146,20 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       }
       <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
       <directionalLight position={[0, 0, 5]} intensity={0.5} />
-      <OrbitControls />
+      <OrbitControls makeDefault />
     </Canvas>
     <div className="flex flex-col gap-4">
-      <select className="select w-full max-w-xs" value={vizualisation} onChange={(event) => setVizualisation(event.target.value as visualizationType)}>
-        <option disabled selected>Pick your vizualisation</option>
-        <option value="basic">Basic</option>
-        <option value="bordered">Bordered</option>
-        <option value="color-bordered">Color Bordered</option>
-        <option value="randomZ">Random Z axis</option>
-        <option value="explode">Explode</option>
-        <option value="cubist">Cubist</option>
-      </select>
-      <div className="form-control">
-        <label className="label cursor-pointer">
-          <span className="label-text">with Frame ?</span>
-          <input type="checkbox" className="toggle" checked={hasBorder} onChange={() => setHasBorder(!hasBorder)} />
-        </label>
+      <VisualizationSelect visualization={vizualisation} onChange={(vizualisation) => setVizualisation(vizualisation)} />
+      <HasBorder  hasBorder={hasBorder} onChange={setHasBorder}/>
+      <div>
+        <p>Controls</p>
+        <ul>
+          <li>Double click to full screen</li>
+          <li>Click to rotate the camera</li>
+          <li>Scroll Wheel to zoom in/out</li>
+        </ul>
       </div>
+
     </div>
   </div>
   );
