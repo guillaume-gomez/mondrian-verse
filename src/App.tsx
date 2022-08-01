@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { useFullscreen } from "rooks";
 import './App.css';
 import useMondrian from "./hooks/useMondrian";
+import useSetInterval from "./hooks/useSetInterval";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import SliderWithLabel from "./components/SliderWithLabel";
@@ -21,6 +22,8 @@ function App() {
   const [enableBlack, setEnableBlack] = useState<boolean>(true);
   const [mode, setMode] = useState<"2d"|"3d">("2d");
   const { generate, rects, setHasBlack } = useMondrian();
+  const { startInterval, stopInterval, isIntervalRunning } = useSetInterval();
+
   
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
@@ -28,8 +31,8 @@ function App() {
   const { toggle } = useFullscreen();
 
   useEffect(() => {
-    generate(width, height, nbIterations);
-  }, [/*generate*/width, height, nbIterations, enableBlack]);
+    toRun();
+  }, [/*generate*/width, height, nbIterations, thickness, enableBlack]);
   // adding generate create a pleaseant glitch :p
 
   useEffect(() => {
@@ -56,6 +59,15 @@ function App() {
         refSave.current.href = dataUrl.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
       }
     }
+  }
+
+  function toRun() {
+    generate(width, height, nbIterations);
+    stopInterval();
+  }
+
+  function toRunPeriodically() {
+    startInterval(() => generate(width, height, nbIterations), 1250);
   }
   
   return (
@@ -99,7 +111,10 @@ function App() {
         </div>
         <div className="w-2/4 mx-auto">
           <div className="flex flex-col justify-center gap-5">
-            <button className="btn btn-secondary btn-lg" onClick={() => generate(width, height, nbIterations)}> Regenerate</button>
+            <div className="flex sm:flex-row flex-col gap-2 justify-center items-center">
+              <button className="btn btn-secondary btn-lg md:w-1/2 w-full" onClick={toRun}> Regenerate</button>
+              <button className="btn btn-secondary btn-lg md:w-1/2 w-full" disabled={isIntervalRunning} onClick={toRunPeriodically}> Regenerate Periodically</button>
+            </div>
             <SliderWithLabel label="Thickness" min={2} max={100} value={thickness} step={2} onChange={(value) => setThickness(parseInt(value))}/>
             <SliderWithLabel label="Nb Iteration" min={2} max={15} value={nbIterations} step={1} onChange={(value) => setNbIteration(parseInt(value))}/>
             <SliderWithLabel label="Width" min={200} max={1200} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
