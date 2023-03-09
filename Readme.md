@@ -1,8 +1,13 @@
 # Mondrian Verse
  A mondrian generator on both 2d and 3d.
 
+## Example
+- 2D
+![mondrian in 2d](example2d.png)
 
-font: https://freefontsfamily.com/bauhaus-font-family-free-download/
+- 3D
+![mondrian in 3d](example3d.png)
+
 
 ## Inspirations
 
@@ -13,3 +18,7 @@ https://github.com/JEFworks/mondrian-generator
 https://inventwithpython.com/bigbookpython/project47.html
 https://reactfordataviz.com/articles/mondrian-art-generator/
 https://mondrian-generator.swizec-react-dataviz.vercel.app/
+
+## Font
+
+font: https://freefontsfamily.com/bauhaus-font-family-free-download/
