@@ -1,15 +1,17 @@
 {
   "files": {
-    "main.css": "/mondrian-verse/static/css/main.476df4fa.css",
-    "main.js": "/mondrian-verse/static/js/main.6b17034e.js",
+    "main.css": "/mondrian-verse/static/css/main.45dedfbe.css",
+    "main.js": "/mondrian-verse/static/js/main.c000fcff.js",
     "static/js/787.21aac90f.chunk.js": "/mondrian-verse/static/js/787.21aac90f.chunk.js",
+    "static/media/BauhausRegular.ttf": "/mondrian-verse/static/media/BauhausRegular.5bf74b8a714edb9a851d.ttf",
+    "static/media/BAUHHL.ttf": "/mondrian-verse/static/media/BAUHHL.4f583362403d123503c9.ttf",
     "index.html": "/mondrian-verse/index.html",
-    "main.476df4fa.css.map": "/mondrian-verse/static/css/main.476df4fa.css.map",
-    "main.6b17034e.js.map": "/mondrian-verse/static/js/main.6b17034e.js.map",
+    "main.45dedfbe.css.map": "/mondrian-verse/static/css/main.45dedfbe.css.map",
+    "main.c000fcff.js.map": "/mondrian-verse/static/js/main.c000fcff.js.map",
     "787.21aac90f.chunk.js.map": "/mondrian-verse/static/js/787.21aac90f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.476df4fa.css",
-    "static/js/main.6b17034e.js"
+    "static/css/main.45dedfbe.css",
+    "static/js/main.c000fcff.js"
   ]
 }
