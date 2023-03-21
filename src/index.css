@@ -2,22 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Bauhaus";
+  src: local("Bauhaus"),
+    url("./fonts/BAUHHL.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "BauhausRegular";
+  src: local("BauhausRegular"),
+    url("./fonts/BauhausRegular.ttf") format("truetype");
+}
+
+@layer base {
+  html {
+    font-family: 'Bauhaus', sans-serif;
+  }
+
+  .title {
+     font-family:'BauhausRegular', sans-serif;
+  }
+}
+
+
 [data-theme="mytheme"] .btn, .select, .card {
   border-width: 6px;
   border-color: black;
-}
-
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }

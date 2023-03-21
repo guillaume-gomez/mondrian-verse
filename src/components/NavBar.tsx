@@ -9,7 +9,7 @@ function NavBar({githubUrl} : NavBarProps ): React.ReactElement {
      <div className="navbar mb-2 bg-neutral-focus text-neutral-content p-6">
      <img className="rounded-sm" src={process.env.PUBLIC_URL + '/logo192.png'} width="64px" alt="application logo" />
       <div className="px-2 mx-2 navbar-start flex flex-col gap-1 items-start">
-        <span className="text-2xl font-bold">
+        <span className="title text-3xl font-bold">
           Mondrian Verse
         </span>
         <span className="text-xs">
