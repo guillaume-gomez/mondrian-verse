@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type visualizationType = "basic"|"bordered"| "color-bordered"|"explode"|"cubist"|"randomZ";
+export type visualizationType = "basic"|"bordered"| "color-bordered"|"explode"|"cubist"|"randomZ"| "city";
 
 
 interface VisualizationProps {
@@ -18,6 +18,7 @@ function VisualizationSelect({onChange, visualization} : VisualizationProps ): R
         <option value="randomZ">Random Z axis</option>
         <option value="explode">Explode</option>
         <option value="cubist">Cubist</option>
+        <option value="city">City</option>
     </select>
   );
 }
