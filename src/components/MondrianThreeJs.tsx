@@ -7,6 +7,7 @@ import VisualizationSelect, { visualizationType } from "./VisualizationSelect";
 import HasBorder from "./HasBorderInput";
 import { CustomRect, centerRect } from "../utils";
 import { possibleColorsType, BlackColor, RedColor, BlueColor, YellowColor, WhiteColor } from "../hooks/useMondrian";
+import Help3D from "./Help3D";
 
 interface MondrianThreeJsProps {
   width: number;
@@ -163,32 +164,7 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
         <VisualizationSelect visualization={vizualisation} onChange={(vizualisation) => setVizualisation(vizualisation)} />
         <HasBorder  hasBorder={hasBorder} onChange={setHasBorder}/>
       </div>
-      <div className="dropdown dropdown-hover">
-        <label tabIndex={0} className="btn btn-sm">Help ?</label>
-        <div tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box list-disc">
-          <table className="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>Controls</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <tr>
-                <th>Left Click </th>
-                <td>Rotate Camera</td>
-              </tr>
-
-              <tr>
-                <th>Wheel Scroll</th>
-                <td>Zoom In/Out</td>
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <Help3D />
     </div>
   </div>
   );
