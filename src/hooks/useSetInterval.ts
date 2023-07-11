@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 
 
 function useSetInterval() {
-  const refFunction = useRef<null|NodeJS.Timeout>(null);
+  const refFunction = useRef<null|number>(null);
   const [isIntervalRunning, setIsIntervalRunning] = useState<boolean>(false);
 
   function startInterval(callback: Function, timer: number) {
