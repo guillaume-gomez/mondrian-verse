@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from "/logo192.png";
 
 interface NavBarProps {
   githubUrl: string;
@@ -7,7 +8,7 @@ interface NavBarProps {
 function NavBar({githubUrl} : NavBarProps ): React.ReactElement {
   return (
      <div className="navbar mb-2 bg-neutral-focus text-neutral-content p-6">
-     <img className="rounded-sm" src={process.env.PUBLIC_URL + '/logo192.png'} width="64px" alt="application logo" />
+     <img className="rounded-sm" src={logo} width="64px" alt="application logo" />
       <div className="px-2 mx-2 navbar-start flex flex-col gap-1 items-start">
         <span className="title text-3xl font-bold">
           Mondrian Verse
