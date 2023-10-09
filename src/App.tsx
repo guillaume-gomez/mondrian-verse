@@ -116,7 +116,7 @@ function App() {
               <button className="btn btn-secondary btn-lg md:w-1/2 w-full" disabled={isIntervalRunning} onClick={toRunPeriodically}> Regenerate Periodically</button>
             </div>
             <SliderWithLabel label="Thickness" min={2} max={100} value={thickness} step={2} onChange={(value) => setThickness(parseInt(value))}/>
-            <SliderWithLabel label="Nb Iteration" min={2} max={25} value={nbIterations} step={1} onChange={(value) => setNbIteration(parseInt(value))}/>
+            <SliderWithLabel label="Nb Iteration" min={2} max={20} value={nbIterations} step={1} onChange={(value) => setNbIteration(parseInt(value))}/>
             <SliderWithLabel label="Width" min={200} max={1200} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
             <SliderWithLabel label="Height" min={200} max={1200} value={height} step={5} onChange={(value) => setHeight(parseInt(value))}/>
             <div className="form-control">

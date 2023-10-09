@@ -10,7 +10,7 @@ function useSetInterval() {
       stopInterval();
     }
     setIsIntervalRunning(true);
-    const ref = setInterval(() => callback(), timer);
+    const ref = window.setInterval(() => callback(), timer);
     refFunction.current = ref;
   }
 

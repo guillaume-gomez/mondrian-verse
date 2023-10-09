@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { CameraControls } from '@react-three/drei';
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
 import VisualizationSelect, { visualizationType } from "./VisualizationSelect";
@@ -26,9 +26,21 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
+  const cameraControlRef = useRef<CameraControls|null>(null);
+
+  useEffect(() => {
+    if(cameraControlRef.current) {
+      if(vizualisation == "city") {
+        cameraControlRef.current.setLookAt(0, -1, 1.75, 0, 0, 1, true);
+      }
+      else {
+        cameraControlRef.current.setLookAt(0, 0, 1.5,0, 0, 0, true);
+      }
+    }
+  }, [vizualisation, cameraControlRef])
 
   function computeBorderByColor(color: possibleColorsType) : number {
-    if((vizualisation !== "color-bordered") && (vizualisation !== "cubist")) {
+    if(["basic","bordered", "randomZ", "explode"].includes(vizualisation)) {
       // Math.random to avoid z-fighting
       return 0.1 + Math.random() * 0.001;
     }
@@ -52,6 +64,7 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
 
   useEffect(() => {
     switch(vizualisation) {
+      case "city":
       case "randomZ": {
         setHasBorder(false);
         break;
@@ -124,13 +137,21 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
           depth/2 - depthBorder/2
         ]
       }
+    case "city": {
+        const forRotation = 0.80;
+        return [
+          (rect.x1 + x)/ width -0.5,
+          -(rect.y1 +y)/height + 0.5 ,
+           depth/2 - depthBorder/2 + forRotation
+        ]
+      }
     }
   }
 
   return (
   <div className="flex flex-col justify-center items-center gap-2">
     <Canvas
-      camera={{ position: [-0.15, 0.15, 1.5], fov: 75, far: 5 }}
+      camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
       dpr={window.devicePixelRatio}
       style={{width, height }}
       onDoubleClick={(event: any) => {
@@ -157,7 +178,15 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
       }
       <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
       <directionalLight position={[0, 0, 5]} intensity={0.5} />
-      <OrbitControls makeDefault />
+      <CameraControls
+          ref={cameraControlRef}
+          minPolarAngle={Math.PI/8}
+          maxPolarAngle={Math.PI}
+          minAzimuthAngle={-Math.PI / 1.8}
+          maxAzimuthAngle={Math.PI / 1.8}
+          minDistance={0.09}
+          maxDistance={4}
+      />
     </Canvas>
     <div className="flex flex-col gap-4" style={{width}}>
       <div className="flex flex-col md:flex-row justify-between">
