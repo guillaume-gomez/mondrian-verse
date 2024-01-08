@@ -8,13 +8,14 @@ import HasBorder from "./HasBorderInput";
 import { CustomRect, centerRect } from "../utils";
 import { possibleColorsType, BlackColor, RedColor, BlueColor, YellowColor, WhiteColor } from "../hooks/useMondrian";
 import Help3D from "./Help3D";
+import { useFullscreen } from "rooks";
 
 interface MondrianThreeJsProps {
   width: number;
   height: number;
   thickness: number;
   rects: CustomRect[];
-  toggleFullScreen: (target: EventTarget) => void;
+  toggleFullScreenCallback: (isFullscreenEnabled: boolean) => void;
 }
 
 function randomBetween(min: number, max: number) : number {
@@ -22,10 +23,22 @@ function randomBetween(min: number, max: number) : number {
 }
 
 
-function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : MondrianThreeJsProps ): React.ReactElement {
+function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCallback} : MondrianThreeJsProps ): React.ReactElement {
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+    const {
+    isFullscreenEnabled,
+    toggleFullscreen,
+  } = useFullscreen({ target: canvasRef, onChange: (event: Event) => {
+      if(!isFullscreenEnabled) {
+        toggleFullScreenCallback(true);
+      } else {
+        toggleFullScreenCallback(false);
+      }
+    }
+  });
   const cameraControlRef = useRef<CameraControls|null>(null);
 
   useEffect(() => {
@@ -151,13 +164,12 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreen} : 
   return (
   <div className="flex flex-col justify-center items-center gap-2">
     <Canvas
+      ref={canvasRef}
       camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
       dpr={window.devicePixelRatio}
       style={{width, height }}
       onDoubleClick={(event: any) => {
-        // trick to override canvas background color
-        event.target.style.background="#313131";
-        toggleFullScreen(event.target)
+        toggleFullscreen();
       }}
     >
       <color attach="background" args={[0x797979]} />

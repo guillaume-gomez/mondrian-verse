@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { format } from "date-fns";
-import { useFullscreen } from "rooks";
 import './App.css';
 import useMondrian from "./hooks/useMondrian";
 import useSetInterval from "./hooks/useSetInterval";
@@ -28,11 +27,14 @@ function App() {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
   const refSave = useRef<HTMLAnchorElement>(null);
-  const { toggle } = useFullscreen();
 
   useEffect(() => {
-    toRun();
-  }, [/*generate*/width, height, nbIterations, thickness, enableBlack]);
+    if(isIntervalRunning) {
+      restartPeriodically()
+    } else {
+      toRun();
+    }
+  }, [width, height, nbIterations, thickness, enableBlack]);
   // adding generate create a pleaseant glitch :p
 
   useEffect(() => {
@@ -41,6 +43,23 @@ function App() {
       setHeight(canvasContainerRef.current.offsetWidth - 50);
     }
   }, [innerWidth, canvasContainerRef])
+
+  function onFullScreenCallback(isFullscreen: boolean) {
+    if(isFullscreen) {
+      setWidth(window.screen.width)
+      setHeight(window.screen.height)
+    } else {
+      setWidth(800)
+      setHeight(800)
+    }
+  }
+
+  function restartPeriodically() {
+    if(isIntervalRunning) {
+      stopInterval();
+      toRunPeriodically();
+    }
+  }
 
   function resetDefaultValues() {
     setWidth(800);
@@ -88,7 +107,7 @@ function App() {
                 height={height}
                 thickness={thickness}
                 rects={rects}
-                toggleFullScreen={(target) => toggle(target as any)}
+                toggleFullScreenCallback={onFullScreenCallback}
               />
               :
               <MondrianCanvas
@@ -97,7 +116,7 @@ function App() {
                 height={height}
                 thickness={thickness}
                 rects={rects}
-                toggleFullScreen={(target) => toggle(target as any)}
+                toggleFullScreenCallback={onFullScreenCallback}
               />
             }
             <p className="text-xs italic">Double click on the canvas to go full screen</p>
