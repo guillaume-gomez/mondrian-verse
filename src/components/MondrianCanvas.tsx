@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { CustomRect, heightRect, widthRect} from "../utils";
+import { useFullscreen } from "rooks";
 
 
 interface MondrianCanvasProps {
@@ -7,15 +8,26 @@ interface MondrianCanvasProps {
   height: number;
   thickness: number;
   rects: CustomRect[];
-  toggleFullScreen: (target: EventTarget) => void;
+  toggleFullScreenCallback: (isFullscreenEnabled: boolean) => void;
 }
 
 export interface ExternalActionInterface {
   getImage: () => string |null ;
 }
 
-const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width, height, thickness, rects, toggleFullScreen}, ref) => {
+const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width, height, thickness, rects, toggleFullScreenCallback}, ref) => {
   const refCanvas = useRef<HTMLCanvasElement>(null);
+  const {
+    isFullscreenEnabled,
+    toggleFullscreen,
+  } = useFullscreen({ target: refCanvas, onChange: (event: Event) => {
+      if(!isFullscreenEnabled) {
+        toggleFullScreenCallback(true);
+      } else {
+        toggleFullScreenCallback(false);
+      }
+    }
+  });
   useEffect(() => {
     function drawBorder(context : CanvasRenderingContext2D) {
       drawBorderGen(context, {x1: 0, y1: 0, x2: width, y2: height, color: "#000000"}, thickness);
@@ -74,7 +86,9 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
       width={width}
       height={height}
       style={{background:"#797979"}}
-      onDoubleClick={(event) => toggleFullScreen(event.target)}
+      onDoubleClick={(event: any) => {
+        toggleFullscreen();
+      }}
     />
   );
 });
