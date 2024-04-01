@@ -10,34 +10,35 @@ interface ColoredBoxProps {
   rect: CustomRect;
   depth: number;
   thickness: number;
-  meshProps: JSX.IntrinsicElements['mesh'];
+  //meshProps: JSX.IntrinsicElements['mesh'];
+  position: [number, number, number]
 }
 
-function ColoredBox({width, height,rect, thickness, depth, meshProps}: ColoredBoxProps) {
+function ColoredBox({width, height,rect, thickness, depth, position: targetPosition}: ColoredBoxProps) {
   const widthGeometry = useMemo(() => (widthRect(rect) - thickness) , [rect, thickness]);
   const heightGeometry = useMemo(() => (heightRect(rect) - thickness) , [rect, thickness]);
   const [{ position }, api] = useSpring<any>(() =>({
-    from: meshProps.position,
-    position: meshProps.position,
+    from: targetPosition,
+    position: targetPosition,
     config: { mass: 5, tension: 500, friction: 150, precision: 0.0001 }
   }))
   useEffect(() => {
-    api.start({ to: {position: meshProps.position}})
-  }, [meshProps, api])
+    api.start({ to: {position: targetPosition} });
+  }, [targetPosition, api])
 
-  return (
+  /*return (
     <animated.mesh position={position as any} >
       <boxGeometry args={[widthGeometry, heightGeometry, depth]} />
       <meshStandardMaterial color={rect.color} wireframe={false}/>
     </animated.mesh>
-  )
+  )*/
 
   console.log(rect);
 
   return (
-    <animated.mesh position={[rect.x1 + widthRect(rect)/2, -(rect.y1 + heightRect(rect)/2), 0]} >
-      <boxGeometry args={[(widthRect(rect) - thickness), (heightRect(rect) - thickness), depth]} />
-      <meshStandardMaterial color={rect.color} wireframe={true}/>
+    <animated.mesh position={targetPosition} >
+      <boxGeometry args={[widthGeometry, heightGeometry, depth]} />
+      <meshStandardMaterial color={rect.color} wireframe={false}/>
     </animated.mesh>
   )
 }
