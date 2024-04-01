@@ -13,57 +13,55 @@ interface BorderProps {
 const material = new THREE.MeshStandardMaterial( { color: "black" } );
 
 function Border({rect, thickness, depth, meshProps}: BorderProps) {
-  const { size: { width, height } } = useThree();
-  const thicknessWidth = useMemo(() => thickness/width , [thickness, width]);
-  const thicknessHeight = useMemo(() => thickness/height , [thickness, height]);
-  const widthGeometry = useMemo(() => new THREE.BoxGeometry( widthRect(rect)/ width, thicknessHeight, depth ) , [rect, width, thicknessHeight, depth]);
-  const heightGeometry = useMemo(() => new THREE.BoxGeometry( thicknessWidth, heightRect(rect) / height, depth ) , [rect, height, thicknessWidth, depth]);
-  const [x, y] = useMemo(() => centerRect(rect), [rect]);
+  const widthGeometry = useMemo(() => new THREE.BoxGeometry( widthRect(rect) + thickness, thickness, depth ) , [rect, thickness, depth]);
+  const heightGeometry = useMemo(() => new THREE.BoxGeometry( thickness, heightRect(rect), depth ) , [rect, thickness, depth]);
+  const [centerX, centerY] = useMemo(() => centerRect(rect), [rect]);
   return (
     <>
+    {/*UP*/}
     <mesh
       material={material}
       geometry={widthGeometry}
       position={[
-        (rect.x1 + x)/ width,
-        -(rect.y1 + thicknessHeight)/height,
+        (rect.x1 + centerX),
+        -(rect.y1),
         0
       ]
      }
       {...meshProps}
     />
-
+    {/*DOWN*/}
     <mesh
       material={material}
       geometry={widthGeometry}
       position={[
-        (rect.x1 + x)/ width ,
-        -(rect.y2 + thicknessHeight)/height,
+        (rect.x1 + centerX),
+        -(rect.y2),
         0
       ]
      }
       {...meshProps}
     />
-
+    {/*LEFT*/}
     <mesh
       material={material}
       geometry={heightGeometry}
       position={[
-        (rect.x1 + thicknessWidth)/ width,
-         -(rect.y1 + y)/height,
+        (rect.x1),
+         -(rect.y1 + centerY),
          0
         
       ]
      }
       {...meshProps}
     />
-
+    {/*RIGHT*/}
     <mesh
       material={material}
       geometry={heightGeometry}
       position={[
-        (rect.x2 + thicknessWidth)/ width ,
-        -(rect.y1 + y)/height,
+        (rect.x2) ,
+        -(rect.y1 + centerY),
         0
       ]
      }
