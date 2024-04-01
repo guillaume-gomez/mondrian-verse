@@ -22,6 +22,7 @@ function randomBetween(min: number, max: number) : number {
   return Math.random() * (max - min + 1) + min;
 }
 
+const SCALE = 1000;
 
 function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCallback} : MondrianThreeJsProps ): React.ReactElement {
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
@@ -112,16 +113,16 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
       case "basic":
       default: {
         return [
-          rect.x1 + widthRect(rect)/2,
-          -(rect.y1 + heightRect(rect)/2),
+          rect.x1 + x,
+          -(rect.y1 + y),
           0
         ];
       }
       case "randomZ": {
         return [
-          rect.x1 + widthRect(rect)/2,
-          -(rect.y1 + heightRect(rect)/2),
-          randomBetween(-0.01,0.01) - 1
+          rect.x1 + x,
+          -(rect.y1 + y),
+          (randomBetween(-0.01,0.01) - 0.5) * SCALE
         ];
       }
       case "explode":{
@@ -131,22 +132,22 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
         const vy = ((rect.y1 + y) - middleScreenY);
         //Offset of 1 in z to make sure the shapes are visible
         return [
-          (rect.x1 + x + vx)/ width -0.5,
-          -(rect.y1 + y + vy)/height + 0.5,
+          (rect.x1 + x + vx),
+          -(rect.y1 + y + vy),
           randomBetween(-0.01,0.01) -1 ];
       }
       case "cubist": {
         return [
-          (rect.x1 + x)/ width -0.5,
-          -(rect.y1 +y)/height + 0.5,
+          (rect.x1 + x),
+          -(rect.y1 +y),
           depth/2 - depthBorder/2
         ]
       }
     case "city": {
         const forRotation = 0.80;
         return [
-          (rect.x1 + x)/ width -0.5,
-          -(rect.y1 +y)/height + 0.5 ,
+          (rect.x1 + x),
+          -(rect.y1 +y),
            depth/2 - depthBorder/2 + forRotation
         ]
       }
@@ -164,12 +165,12 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
       }}
     >
       <color attach="background" args={[0x797979]} />
-      <Grid />
-      <group scale={0.001} position={[-((width/2)/1000), (height/2)/1000, 0]}>
-        { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} width={width} height={height} /> }
+      { import.meta.env.MODE === "development" && <Grid />}
+      <group scale={1/SCALE} position={[-((width/2)/SCALE), (height/2)/SCALE, 0]}>
+        { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder * SCALE} width={width} height={height} /> }
         {
           rects.map((rect, index) => {
-            const depth = computeBorderByColor(rect.color as possibleColorsType);
+            const depth = computeBorderByColor(rect.color as possibleColorsType) * SCALE;
             return (
               <ColoredBox
                 width={width}
@@ -178,7 +179,7 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
                 rect={rect}
                 thickness={thickness}
                 depth={depth}
-                meshProps={{position: computePosition(rect, depth)}}
+                position={computePosition(rect, depth)}
               />
             );
           })

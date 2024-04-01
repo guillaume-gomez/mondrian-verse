@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect } from 'react';
+import { usePreviousDifferent } from "rooks";
 import { useThree } from '@react-three/fiber';
 import { useSpring, animated } from '@react-spring/three';
 import { CustomRect, heightRect, widthRect } from "../../utils";
@@ -17,26 +18,18 @@ interface ColoredBoxProps {
 function ColoredBox({width, height,rect, thickness, depth, position: targetPosition}: ColoredBoxProps) {
   const widthGeometry = useMemo(() => (widthRect(rect) - thickness) , [rect, thickness]);
   const heightGeometry = useMemo(() => (heightRect(rect) - thickness) , [rect, thickness]);
-  const [{ position }, api] = useSpring<any>(() =>({
-    from: targetPosition,
-    position: targetPosition,
-    config: { mass: 5, tension: 500, friction: 150, precision: 0.0001 }
-  }))
-  useEffect(() => {
-    api.start({ to: {position: targetPosition} });
-  }, [targetPosition, api])
 
-  /*return (
-    <animated.mesh position={position as any} >
-      <boxGeometry args={[widthGeometry, heightGeometry, depth]} />
-      <meshStandardMaterial color={rect.color} wireframe={false}/>
-    </animated.mesh>
-  )*/
+  const previousValuePosition = usePreviousDifferent(targetPosition);
 
-  console.log(rect);
+  const spring = useSpring({
+    from: {  position: previousValuePosition },
+    to  : { position: targetPosition },
+    config: { mass: 5, tension: 500, friction: 150, precision: 0.0001 },
+    reset: true,
+  });
 
   return (
-    <animated.mesh position={targetPosition} >
+    <animated.mesh position={spring.position} >
       <boxGeometry args={[widthGeometry, heightGeometry, depth]} />
       <meshStandardMaterial color={rect.color} wireframe={false}/>
     </animated.mesh>
