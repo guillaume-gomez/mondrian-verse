@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { CameraControls } from '@react-three/drei';
+import { CameraControls, Grid } from '@react-three/drei';
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
 import VisualizationSelect, { visualizationType } from "./VisualizationSelect";
 import HasBorder from "./HasBorderInput";
-import { CustomRect, centerRect } from "../utils";
+import { CustomRect, centerRect, widthRect, heightRect } from "../utils";
 import { possibleColorsType, BlackColor, RedColor, BlueColor, YellowColor, WhiteColor } from "../hooks/useMondrian";
 import Help3D from "./Help3D";
 import { useFullscreen } from "rooks";
@@ -111,26 +111,18 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
       case "bordered":
       case "basic":
       default: {
-        /*
-          -0.5 and 0.5 in position are here to center the shape
-          Offset of 1 in z to make sure the shapes are visible
-        */
         return [
-          (rect.x1 + x)/ width -0.5,
-          -(rect.y1 +y)/height + 0.5,
+          rect.x1 + widthRect(rect)/2,
+          -(rect.y1 + heightRect(rect)/2),
           0
         ];
       }
       case "randomZ": {
-        /*
-          -0.5 and 0.5 in position are here to center the shape
-          Offset of 1 in z to make sure the shapes are visible
-        */
         return [
-          (rect.x1 + x)/ width -0.5,
-          -(rect.y1 +y)/height + 0.5,
+          rect.x1 + widthRect(rect)/2,
+          -(rect.y1 + heightRect(rect)/2),
           randomBetween(-0.01,0.01) - 1
-        ]
+        ];
       }
       case "explode":{
         const middleScreenX = (width/2);
@@ -162,32 +154,36 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
   }
 
   return (
-  <div className="flex flex-col justify-center items-center gap-2">
+  <div className="flex flex-col justify-center items-center gap-2 h-screen w-full">
     <Canvas
       ref={canvasRef}
       camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
       dpr={window.devicePixelRatio}
-      style={{width, height }}
       onDoubleClick={(event: any) => {
         toggleFullscreen();
       }}
     >
       <color attach="background" args={[0x797979]} />
-      { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} /> }
-      {
-        rects.map((rect, index) => {
-          const depth = computeBorderByColor(rect.color as possibleColorsType);
-          return (
-            <ColoredBox
-              key={index}
-              rect={rect}
-              thickness={thickness}
-              depth={depth}
-              meshProps={{position: computePosition(rect, depth)}}
-            />
-          );
-        })
-      }
+      <Grid />
+      <group scale={0.001} position={[-((width/2)/1000), (height/2)/1000, 0]}>
+        { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder} width={width} height={height} /> }
+        {
+          rects.map((rect, index) => {
+            const depth = computeBorderByColor(rect.color as possibleColorsType);
+            return (
+              <ColoredBox
+                width={width}
+                height={height}
+                key={index}
+                rect={rect}
+                thickness={thickness}
+                depth={depth}
+                meshProps={{position: computePosition(rect, depth)}}
+              />
+            );
+          })
+        }
+      </group>
       <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
       <directionalLight position={[0, 0, 5]} intensity={0.5} />
       <CameraControls
