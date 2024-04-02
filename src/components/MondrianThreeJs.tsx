@@ -196,12 +196,15 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
           maxDistance={4}
       />
     </Canvas>
+    <p className="text-xs italic">Double click on the canvas to go full screen</p>
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-col md:flex-row justify-between">
+      <div className="flex flex-col md:flex-row items-center justify-between">
+        <div>
         <VisualizationSelect visualization={vizualisation} onChange={(vizualisation) => setVizualisation(vizualisation)} />
         <HasBorder  hasBorder={hasBorder} onChange={setHasBorder}/>
+        </div>
+        <Help3D />
       </div>
-      <Help3D />
     </div>
   </div>
   );
