@@ -1,13 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: "Bauhaus";
-  src: local("Bauhaus"),
-    url("./fonts/BAUHHL.ttf") format("truetype");
-}
-
 @font-face {
   font-family: "BauhausRegular";
   src: local("BauhausRegular"),
@@ -16,11 +9,7 @@
 
 @layer base {
   html {
-    font-family: 'Bauhaus', sans-serif;
-  }
-
-  .title {
-     font-family:'BauhausRegular', sans-serif;
+    font-family: 'BauhausRegular', sans-serif;
   }
 }
 
@@ -36,6 +25,8 @@
 
 [data-theme="mytheme"] .btn {
   text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
 }
 
 .border-top {
