@@ -44,11 +44,11 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
 
   useEffect(() => {
     if(cameraControlRef.current) {
-      if(vizualisation == "city") {
-        cameraControlRef.current.setLookAt(0, -1, 1.75, 0, 0, 1, true);
+      if(vizualisation === "city") {
+        cameraControlRef.current.setLookAt(0, -Math.PI/2, Math.PI/2, 0, 0.25, 0, true);
       }
       else {
-        cameraControlRef.current.setLookAt(0, 0, 1.5,0, 0, 0, true);
+        cameraControlRef.current.setLookAt(0, 0, Math.PI/2,0, 0, 0, true);
       }
     }
   }, [vizualisation, cameraControlRef])
@@ -144,18 +144,17 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
         ]
       }
     case "city": {
-        const forRotation = 0.80;
         return [
           (rect.x1 + x),
           -(rect.y1 +y),
-           depth/2 - depthBorder/2 + forRotation
+          depth/2 - depthBorder/2
         ]
       }
     }
   }
 
   return (
-  <div className="flex flex-col justify-center items-center gap-2 h-screen w-full">
+  <div className="flex flex-col justify-center items-center gap-2 h-screen w-5/6">
     <Canvas
       ref={canvasRef}
       camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
@@ -197,7 +196,7 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
           maxDistance={4}
       />
     </Canvas>
-    <div className="flex flex-col gap-4" style={{width}}>
+    <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-col md:flex-row justify-between">
         <VisualizationSelect visualization={vizualisation} onChange={(vizualisation) => setVizualisation(vizualisation)} />
         <HasBorder  hasBorder={hasBorder} onChange={setHasBorder}/>
