@@ -8,6 +8,9 @@
 - 3D
 ![mondrian in 3d](example3d.png)
 
+<video src="mondrian.mp4" placeholder="mondrian.mp4" autoplay loop controls muted title="test-title">
+   Sorry, your browser doesn't support HTML 5 video.
+</video>
 
 ## Inspirations
 
