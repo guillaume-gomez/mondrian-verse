@@ -24,8 +24,25 @@
   }
 }
 
+:root {
+  --border-size: 6px;
+}
+
 
 [data-theme="mytheme"] .btn, .select, .card {
-  border-width: 6px;
+  border-width: var(--border-size);
   border-color: black;
+}
+
+[data-theme="mytheme"] .btn {
+  text-transform: uppercase;
+}
+
+.border-top {
+  border-top-width: var(--border-size);
+
+}
+
+.border-bottom {
+  border-bottom-width: var(--border-size);
 }
