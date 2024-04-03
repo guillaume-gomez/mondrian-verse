@@ -28,8 +28,9 @@ function ColoredBox({width, height,rect, thickness, depth, position: targetPosit
     reset: true,
   });
 
+  // any is for https://github.com/pmndrs/react-spring/discussions/1523
   return (
-    <animated.mesh position={spring.position} >
+    <animated.mesh position={spring.position as any} > 
       <boxGeometry args={[widthGeometry, heightGeometry, depth]} />
       <meshStandardMaterial color={rect.color} wireframe={false}/>
     </animated.mesh>
