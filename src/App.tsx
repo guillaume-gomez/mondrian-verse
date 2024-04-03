@@ -16,6 +16,9 @@ function App() {
   const { innerWidth } = useWindowSize();
   const [width, setWidth] = useState<number>(800);
   const [height, setHeight] = useState<number>(800);
+  const [maxWidth, setMaxWidth] = useState<number>(1920);
+  const [maxHeight, setMaxHeight] = useState<number>(1200);
+
   const [nbIterations, setNbIteration] = useState<number>(3);
   const [thickness, setThickness] = useState<number>(10);
   const [enableBlack, setEnableBlack] = useState<boolean>(true);
@@ -44,15 +47,12 @@ function App() {
     }
   }, [innerWidth, canvasContainerRef])
 
-  function onFullScreenCallback(isFullscreen: boolean) {
-    if(isFullscreen) {
-      //setWidth(window.screen.width)
-      //setHeight(window.screen.height)
-    } else {
-      //setWidth(800)
-      //setHeight(800)
+    useEffect(() => {
+    if(canvasContainerRef.current && canvasContainerRef.current.offsetWidth <= width) {
+      setWidth(canvasContainerRef.current.offsetWidth - 50);
+      setHeight(canvasContainerRef.current.offsetWidth - 50);
     }
-  }
+  }, [innerWidth, canvasContainerRef])
 
   function restartPeriodically() {
     if(isIntervalRunning) {
@@ -107,7 +107,6 @@ function App() {
                 height={height}
                 thickness={thickness}
                 rects={rects}
-                toggleFullScreenCallback={onFullScreenCallback}
               />
               :
               <MondrianCanvas
@@ -116,7 +115,6 @@ function App() {
                 height={height}
                 thickness={thickness}
                 rects={rects}
-                toggleFullScreenCallback={onFullScreenCallback}
               />
             }
           </div>
@@ -135,8 +133,8 @@ function App() {
             </div>
             <SliderWithLabel label="Thickness" min={2} max={100} value={thickness} step={2} onChange={(value) => setThickness(parseInt(value))}/>
             <SliderWithLabel label="Nb Iteration" min={2} max={20} value={nbIterations} step={1} onChange={(value) => setNbIteration(parseInt(value))}/>
-            <SliderWithLabel label="Width" min={200} max={1200} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
-            <SliderWithLabel label="Height" min={200} max={1200} value={height} step={5} onChange={(value) => setHeight(parseInt(value))}/>
+            <SliderWithLabel label="Width" min={200} max={maxWidth} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
+            <SliderWithLabel label="Height" min={200} max={maxHeight} value={height} step={5} onChange={(value) => setHeight(parseInt(value))}/>
             <div className="form-control">
               <label className="label cursor-pointer gap-2">
                 <span className="label-text">Has Black as possible colors</span>

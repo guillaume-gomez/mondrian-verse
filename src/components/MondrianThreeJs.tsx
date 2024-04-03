@@ -15,7 +15,6 @@ interface MondrianThreeJsProps {
   height: number;
   thickness: number;
   rects: CustomRect[];
-  toggleFullScreenCallback: (isFullscreenEnabled: boolean) => void;
 }
 
 function randomBetween(min: number, max: number) : number {
@@ -24,7 +23,7 @@ function randomBetween(min: number, max: number) : number {
 
 const SCALE = 1000;
 
-function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCallback} : MondrianThreeJsProps ): React.ReactElement {
+function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsProps ): React.ReactElement {
   const [depthBorder, setDepthBorder] = useState<number>(0.1);
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
@@ -33,14 +32,7 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
     const {
     isFullscreenEnabled,
     toggleFullscreen,
-  } = useFullscreen({ target: containerCanvas, onChange: (event: Event) => {
-      if(!isFullscreenEnabled) {
-        toggleFullScreenCallback(true);
-      } else {
-        toggleFullScreenCallback(false);
-      }
-    }
-  });
+  } = useFullscreen({ target: containerCanvas });
   const cameraControlRef = useRef<CameraControls|null>(null);
 
   useEffect(() => {
