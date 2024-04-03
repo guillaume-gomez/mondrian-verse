@@ -46,11 +46,11 @@ function App() {
 
   function onFullScreenCallback(isFullscreen: boolean) {
     if(isFullscreen) {
-      setWidth(window.screen.width)
-      setHeight(window.screen.height)
+      //setWidth(window.screen.width)
+      //setHeight(window.screen.height)
     } else {
-      setWidth(800)
-      setHeight(800)
+      //setWidth(800)
+      //setHeight(800)
     }
   }
 

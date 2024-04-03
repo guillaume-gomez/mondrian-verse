@@ -29,10 +29,11 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
   const [hasBorder, setHasBorder] = useState<boolean>(true);
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerCanvas = useRef<HTMLDivElement>(null);
     const {
     isFullscreenEnabled,
     toggleFullscreen,
-  } = useFullscreen({ target: canvasRef, onChange: (event: Event) => {
+  } = useFullscreen({ target: containerCanvas, onChange: (event: Event) => {
       if(!isFullscreenEnabled) {
         toggleFullScreenCallback(true);
       } else {
@@ -154,48 +155,50 @@ function MondrianThreeJs({width , height, thickness, rects, toggleFullScreenCall
   }
 
   return (
-  <div className="flex flex-col justify-center items-center gap-2 h-screen w-5/6">
-    <Canvas
-      ref={canvasRef}
-      camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
-      dpr={window.devicePixelRatio}
-      onDoubleClick={(event: any) => {
-        toggleFullscreen();
-      }}
-    >
-      <color attach="background" args={[0x797979]} />
-      { import.meta.env.MODE === "development" && <Grid />}
-      <group scale={1/SCALE} position={[-((width/2)/SCALE), (height/2)/SCALE, 0]}>
-        { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder * SCALE} width={width} height={height} /> }
-        {
-          rects.map((rect, index) => {
-            const depth = computeBorderByColor(rect.color as possibleColorsType) * SCALE;
-            return (
-              <ColoredBox
-                width={width}
-                height={height}
-                key={index}
-                rect={rect}
-                thickness={thickness}
-                depth={depth}
-                position={computePosition(rect, depth)}
-              />
-            );
-          })
-        }
-      </group>
-      <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
-      <directionalLight position={[0, 0, 5]} intensity={0.5} />
-      <CameraControls
-          ref={cameraControlRef}
-          minPolarAngle={Math.PI/8}
-          maxPolarAngle={Math.PI}
-          minAzimuthAngle={-Math.PI / 1.8}
-          maxAzimuthAngle={Math.PI / 1.8}
-          minDistance={0.09}
-          maxDistance={4}
-      />
-    </Canvas>
+  <div className="flex flex-col justify-center items-center gap-2 w-5/6">
+    <div className="w-full h-full" ref={containerCanvas}>
+      <Canvas
+        ref={canvasRef}
+        camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
+        dpr={window.devicePixelRatio}
+        onDoubleClick={(event: any) => {
+          toggleFullscreen();
+        }}
+      >
+        <color attach="background" args={[0x797979]} />
+        { import.meta.env.MODE === "development" && <Grid />}
+        <group scale={1/SCALE} position={[-((width/2)/SCALE), (height/2)/SCALE, 0]}>
+          { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder * SCALE} width={width} height={height} /> }
+          {
+            rects.map((rect, index) => {
+              const depth = computeBorderByColor(rect.color as possibleColorsType) * SCALE;
+              return (
+                <ColoredBox
+                  width={width}
+                  height={height}
+                  key={index}
+                  rect={rect}
+                  thickness={thickness}
+                  depth={depth}
+                  position={computePosition(rect, depth)}
+                />
+              );
+            })
+          }
+        </group>
+        <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
+        <directionalLight position={[0, 0, 5]} intensity={0.5} />
+        <CameraControls
+            ref={cameraControlRef}
+            minPolarAngle={Math.PI/8}
+            maxPolarAngle={Math.PI}
+            minAzimuthAngle={-Math.PI / 1.8}
+            maxAzimuthAngle={Math.PI / 1.8}
+            minDistance={0.09}
+            maxDistance={4}
+        />
+      </Canvas>
+    </div>
     <p className="text-xs italic">Double click on the canvas to go full screen</p>
     <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-col md:flex-row items-center justify-between">
