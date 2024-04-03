@@ -13,9 +13,9 @@ import { useWindowSize } from "rooks";
 const githubUrl = "https://github.com/guillaume-gomez/mondrian-verse";
 
 function App() {
-  const { innerWidth } = useWindowSize();
-  const [width, setWidth] = useState<number>(800);
-  const [height, setHeight] = useState<number>(800);
+  const { innerWidth, innerHeight } = useWindowSize();
+  const [width, setWidth] = useState<number>(600);
+  const [height, setHeight] = useState<number>(600);
   const [maxWidth, setMaxWidth] = useState<number>(1920);
   const [maxHeight, setMaxHeight] = useState<number>(1200);
 
@@ -40,19 +40,19 @@ function App() {
   }, [width, height, nbIterations, thickness, enableBlack]);
   // adding generate create a pleaseant glitch :p
 
-  useEffect(() => {
-    if(canvasContainerRef.current && canvasContainerRef.current.offsetWidth <= width) {
-      setWidth(canvasContainerRef.current.offsetWidth - 50);
-      setHeight(canvasContainerRef.current.offsetWidth - 50);
-    }
-  }, [innerWidth, canvasContainerRef])
-
     useEffect(() => {
-    if(canvasContainerRef.current && canvasContainerRef.current.offsetWidth <= width) {
-      setWidth(canvasContainerRef.current.offsetWidth - 50);
-      setHeight(canvasContainerRef.current.offsetWidth - 50);
+    if(canvasContainerRef.current) {
+      setMaxWidth(canvasContainerRef.current.offsetWidth - 50);
+      setMaxHeight(canvasContainerRef.current.offsetWidth - 50);
+      if(
+          canvasContainerRef.current.offsetWidth <= width ||
+          canvasContainerRef.current.offsetHeight <= height
+        ) {
+        setWidth(canvasContainerRef.current.offsetWidth - 50);
+        setHeight(canvasContainerRef.current.offsetWidth - 50);
+      }
     }
-  }, [innerWidth, canvasContainerRef])
+  }, [innerWidth, innerHeight])
 
   function restartPeriodically() {
     if(isIntervalRunning) {
@@ -98,9 +98,8 @@ function App() {
         <div
           ref={canvasContainerRef}
           className="flex flex-col w-3/4 mx-auto card bg-base-300 p-2"
-          style={{overflow: "visible"}}
         >
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center h-100">
             { mode === "3d" ?
               <MondrianThreeJs
                 width={width}

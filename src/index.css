@@ -17,6 +17,22 @@
   --border-size: 6px;
 }
 
+.h-screen-responsive {
+    height: 80vh;
+  }
+
+@media screen and (max-width: 1200px) {
+  .h-screen-responsive {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .h-screen-responsive {
+    height: 50vh;
+  }
+}
+
 
 [data-theme="mytheme"] .btn, .select, .card {
   border-width: var(--border-size);

@@ -7,7 +7,7 @@ interface NavBarProps {
 
 function NavBar({githubUrl} : NavBarProps ): React.ReactElement {
   return (
-     <div className="navbar mb-2 bg-base-300 text-neutral-content p-6 border-bottom border-black">
+     <div className="navbar mb-2 bg-base-300 text-neutral-content border-bottom border-black">
      <img className="rounded-sm" src={logo} width="64px" alt="application logo" />
       <div className="px-2 mx-2 navbar-start flex flex-col gap-1 items-start">
         <span className="title text-3xl font-bold">

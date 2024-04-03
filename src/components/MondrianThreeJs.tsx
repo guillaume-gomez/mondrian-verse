@@ -147,8 +147,8 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   }
 
   return (
-  <div className="flex flex-col justify-center items-center gap-2 w-5/6">
-    <div className="w-full h-full" ref={containerCanvas}>
+  <div className="flex flex-col justify-center items-center gap-2 w-5/6 h-full">
+    <div className="w-full h-screen-responsive" ref={containerCanvas}>
       <Canvas
         ref={canvasRef}
         camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
