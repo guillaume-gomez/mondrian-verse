@@ -34,17 +34,26 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
     toggleFullscreen,
   } = useFullscreen({ target: containerCanvas });
   const cameraControlRef = useRef<CameraControls|null>(null);
+  const ratio = Math.max(width, height)/600;
 
   useEffect(() => {
     if(cameraControlRef.current) {
       if(vizualisation === "city") {
-        cameraControlRef.current.setLookAt(0, -Math.PI/2, Math.PI/2, 0, 0.25, 0, true);
+        cameraControlRef.current.setLookAt(0, -Math.PI/4  * ratio, Math.PI/4, 0, 0.1, 0, true);
+      }
+      else if(
+        vizualisation === "color-bordered" ||
+        vizualisation === "randomZ" ||
+        vizualisation === "explode" ||
+        vizualisation === "cubist"
+        ) {
+        cameraControlRef.current.setLookAt(0, 0, 1.0 * ratio ,0, 0, 0, true);
       }
       else {
-        cameraControlRef.current.setLookAt(0, 0, Math.PI/2,0, 0, 0, true);
+        cameraControlRef.current.setLookAt(0, 0, 0.5 * ratio,0, 0, 0, true);
       }
     }
-  }, [vizualisation, cameraControlRef])
+  }, [vizualisation, cameraControlRef, width, height])
 
   function computeBorderByColor(color: possibleColorsType) : number {
     if(["basic","bordered", "randomZ", "explode"].includes(vizualisation)) {
@@ -151,7 +160,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
     <div className="w-full h-screen-responsive" ref={containerCanvas}>
       <Canvas
         ref={canvasRef}
-        camera={{ position:  [0,0,1.5], fov: 75, far: 5 }}
+        camera={{ position:  [0, 0, ratio * 0.5], fov: 75, far: 5 }}
         dpr={window.devicePixelRatio}
         onDoubleClick={(event: any) => {
           toggleFullscreen();
