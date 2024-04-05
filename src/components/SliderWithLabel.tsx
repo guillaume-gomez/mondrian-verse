@@ -15,8 +15,8 @@ function SliderWithLabel({ value, onChange, min = 1, max = 100, step = 1, label 
   return (
    <div>
      <div className="flex justify-between">
-       <label className="text-base font-semibold">{label}</label>
-       <p className="badge badge-lg">{value}</p>
+       <label className="text-base-100 font-semibold">{label}</label>
+       <p className="badge badge-lg bg-base-300">{value}</p>
      </div>
      <Slider value={value} onChange={onChange} min={min} max={max} />
     </div>

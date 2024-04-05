@@ -6,7 +6,7 @@ interface FooterProps {
 
 function Footer({githubUrl} : FooterProps ): React.ReactElement {
   return (
-    <footer className="p-4 footer bg-base-300 text-base-content footer-center p-6">
+    <footer className="p-4 footer bg-base-300 text-base-content footer-center p-6 border-top border-black">
       <div>
         <p> 2022 - Made By Guillaume Gomez</p>
         <a href={githubUrl} className="text-xs">Did you enjoyed ? 😊 Star the project </a>

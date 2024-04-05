@@ -1,13 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: "Bauhaus";
-  src: local("Bauhaus"),
-    url("./fonts/BAUHHL.ttf") format("truetype");
-}
-
 @font-face {
   font-family: "BauhausRegular";
   src: local("BauhausRegular"),
@@ -16,16 +9,47 @@
 
 @layer base {
   html {
-    font-family: 'Bauhaus', sans-serif;
+    font-family: 'BauhausRegular', sans-serif;
+  }
+}
+
+:root {
+  --border-size: 6px;
+}
+
+.h-screen-responsive {
+    height: 80vh;
   }
 
-  .title {
-     font-family:'BauhausRegular', sans-serif;
+@media screen and (max-width: 1200px) {
+  .h-screen-responsive {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .h-screen-responsive {
+    height: 50vh;
   }
 }
 
 
 [data-theme="mytheme"] .btn, .select, .card {
-  border-width: 6px;
+  border-width: var(--border-size);
   border-color: black;
+}
+
+[data-theme="mytheme"] .btn {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+.border-top {
+  border-top-width: var(--border-size);
+
+}
+
+.border-bottom {
+  border-bottom-width: var(--border-size);
 }

@@ -3,7 +3,7 @@ import React from 'react';
 
 function Help3D(): React.ReactElement {
   return (
-  <div className="dropdown dropdown-hover">
+  <div className="dropdown dropdown-hover  dropdown-end">
     <label tabIndex={0} className="btn btn-sm">Help ?</label>
     <div tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box list-disc">
       <table className="table table-zebra w-full">
