@@ -29,10 +29,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   const [vizualisation, setVizualisation] = useState<visualizationType>("basic");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerCanvas = useRef<HTMLDivElement>(null);
-    const {
-    isFullscreenEnabled,
-    toggleFullscreen,
-  } = useFullscreen({ target: containerCanvas });
+  const { toggleFullscreen } = useFullscreen({ target: containerCanvas });
   const cameraControlRef = useRef<CameraControls|null>(null);
   const ratio = Math.max(width, height)/600;
 

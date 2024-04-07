@@ -26,7 +26,6 @@ function App() {
   const { generate, rects, setHasBlack } = useMondrian();
   const { startInterval, stopInterval, isIntervalRunning } = useSetInterval();
 
-  
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const canvasActionsRef = useRef<ExternalActionInterface| null>(null);
   const refSave = useRef<HTMLAnchorElement>(null);
@@ -40,14 +39,18 @@ function App() {
   }, [width, height, nbIterations, thickness, enableBlack]);
   // adding generate create a pleaseant glitch :p
 
-    useEffect(() => {
+  useEffect(() => {
     if(canvasContainerRef.current) {
       setMaxWidth(canvasContainerRef.current.offsetWidth - 50);
       setMaxHeight(canvasContainerRef.current.offsetWidth - 50);
-      if(
-          canvasContainerRef.current.offsetWidth <= width ||
-          canvasContainerRef.current.offsetHeight <= height
+      if( mode === "2d" &&
+          (canvasContainerRef.current.offsetWidth <= width ||
+          canvasContainerRef.current.offsetHeight <= height)
         ) {
+        console.log(canvasContainerRef)
+        console.log(width, ", ", canvasContainerRef.current.offsetWidth)
+        console.log(height, ", ", canvasContainerRef.current.offsetHeight)
+        console.log("--------------------------------------------------")
         setWidth(canvasContainerRef.current.offsetWidth - 50);
         setHeight(canvasContainerRef.current.offsetWidth - 50);
       }
