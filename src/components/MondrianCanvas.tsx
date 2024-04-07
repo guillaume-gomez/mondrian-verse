@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { CustomRect, heightRect, widthRect} from "../utils";
 import { useFullscreen } from "rooks";
+import SaveImageButton from "./SaveImageButton";
 
 
 interface MondrianCanvasProps {
@@ -73,6 +74,7 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
   }
 
   return (
+    <div className="flex flex-col gap-3">
     <canvas
       ref={refCanvas}
       width={width}
@@ -82,6 +84,10 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
         toggleFullscreen();
       }}
     />
+      <div className="self-end">
+        <SaveImageButton canvasRef={refCanvas} filename={"mondrian-verse"} label="Save as image"/>
+      </div>
+    </div>
   );
 });
 
