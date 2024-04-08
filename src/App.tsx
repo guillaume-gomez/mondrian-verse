@@ -47,10 +47,6 @@ function App() {
           (canvasContainerRef.current.offsetWidth <= width ||
           canvasContainerRef.current.offsetHeight <= height)
         ) {
-        console.log(canvasContainerRef)
-        console.log(width, ", ", canvasContainerRef.current.offsetWidth)
-        console.log(height, ", ", canvasContainerRef.current.offsetHeight)
-        console.log("--------------------------------------------------")
         setWidth(canvasContainerRef.current.offsetWidth - 50);
         setHeight(canvasContainerRef.current.offsetWidth - 50);
       }
