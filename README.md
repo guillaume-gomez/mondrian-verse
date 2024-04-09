@@ -1,16 +1,14 @@
 # Mondrian Verse
  A mondrian generator on both 2d and 3d.
 
-## Example
+https://github.com/guillaume-gomez/mondrian-verse/assets/5362875/b958a861-6df7-401f-b964-e04e042d31b7
+
+## Examples
 - 2D
 ![mondrian in 2d](example2d.png)
 
 - 3D
 ![mondrian in 3d](example3d.png)
-
-<video src="mondrian.mp4" placeholder="mondrian.mp4" autoplay loop controls muted title="test-title">
-   Sorry, your browser doesn't support HTML 5 video.
-</video>
 
 ## Inspirations
 

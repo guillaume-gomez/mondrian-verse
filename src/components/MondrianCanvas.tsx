@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { CustomRect, heightRect, widthRect} from "../utils";
 import { useFullscreen } from "rooks";
+import SaveImageButton from "./SaveImageButton";
 
 
 interface MondrianCanvasProps {
@@ -8,26 +9,18 @@ interface MondrianCanvasProps {
   height: number;
   thickness: number;
   rects: CustomRect[];
-  toggleFullScreenCallback: (isFullscreenEnabled: boolean) => void;
 }
 
 export interface ExternalActionInterface {
   getImage: () => string |null ;
 }
 
-const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width, height, thickness, rects, toggleFullScreenCallback}, ref) => {
+const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(({width, height, thickness, rects }, ref) => {
   const refCanvas = useRef<HTMLCanvasElement>(null);
   const {
     isFullscreenEnabled,
     toggleFullscreen,
-  } = useFullscreen({ target: refCanvas, onChange: (event: Event) => {
-      if(!isFullscreenEnabled) {
-        toggleFullScreenCallback(true);
-      } else {
-        toggleFullScreenCallback(false);
-      }
-    }
-  });
+  } = useFullscreen({ target: refCanvas });
   useEffect(() => {
     function drawBorder(context : CanvasRenderingContext2D) {
       drawBorderGen(context, {x1: 0, y1: 0, x2: width, y2: height, color: "#000000"}, thickness);
@@ -81,6 +74,7 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
   }
 
   return (
+    <div className="flex flex-col gap-3">
     <canvas
       ref={refCanvas}
       width={width}
@@ -90,6 +84,10 @@ const MondrianCanvas = forwardRef<ExternalActionInterface, MondrianCanvasProps>(
         toggleFullscreen();
       }}
     />
+      <div className="self-end">
+        <SaveImageButton canvasRef={refCanvas} filename={"mondrian-verse"} label="Save as image"/>
+      </div>
+    </div>
   );
 });
 
