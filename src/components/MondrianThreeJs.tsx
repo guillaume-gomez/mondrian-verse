@@ -9,6 +9,7 @@ import { CustomRect, centerRect, widthRect, heightRect } from "../utils";
 import { possibleColorsType, BlackColor, RedColor, BlueColor, YellowColor, WhiteColor } from "../hooks/useMondrian";
 import Help3D from "./Help3D";
 import { useFullscreen } from "rooks";
+import { useDoubleTap } from 'use-double-tap';
 
 interface MondrianThreeJsProps {
   width: number;
@@ -30,6 +31,9 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerCanvas = useRef<HTMLDivElement>(null);
   const { toggleFullscreen } = useFullscreen({ target: containerCanvas });
+  const doubleTapEvent = useDoubleTap(() => {
+      toggleFullscreen();
+  });
   const cameraControlRef = useRef<CameraControls|null>(null);
   const ratio = Math.max(width, height)/600;
 
@@ -154,14 +158,15 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
 
   return (
   <div className="flex flex-col justify-center items-center gap-2 w-5/6 h-full">
-    <div className="w-full h-screen-responsive" ref={containerCanvas}>
+    <div
+      className="w-full h-screen-responsive"
+      ref={containerCanvas}
+      {...doubleTapEvent}
+    >
       <Canvas
         ref={canvasRef}
         camera={{ position:  [0, 0, ratio * 0.5], fov: 75, far: 5 }}
         dpr={window.devicePixelRatio}
-        onDoubleClick={(event: any) => {
-          toggleFullscreen();
-        }}
       >
         <color attach="background" args={[0x797979]} />
         { import.meta.env.MODE === "development" && <Grid />}
@@ -197,7 +202,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         />
       </Canvas>
     </div>
-    <p className="text-xs italic">Double click on the canvas to go full screen</p>
+    <p className="text-xs italic">Double click/tap on the canvas to go full screen</p>
     <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-col md:flex-row items-center justify-between">
         <div>
