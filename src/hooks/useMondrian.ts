@@ -100,13 +100,13 @@ function useMondrian() {
 
       // If the rectangle is wider than it's height do a left/right split
       if (width > height) {
-          const x = Math.ceil(width / Phi);
+          const cut = Math.ceil(width / Phi);
           const r1 = { x1, y1, x2: cut, y2, color: randomColor() };
           const r2 = { x1: cut, y1, x2, y2, color: randomColor() };
           return [r1, r2];
       // Else do a top/bottom split
       } else {
-          const y = Math.ceil(height / Phi);
+          const cut = Math.ceil(height / Phi);
           const r1 = { x1, y1, x2, y2: cut, color: randomColor() };
           const r2 = { x1, y1: cut, x2, y2, color: randomColor() };
           return [r1, r2];
@@ -156,6 +156,23 @@ function useMondrian() {
     return accRects;
   }
 
+  function generateGoldenSquare(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
+    // magic number to avoid to little rects
+    const xPad = Math.max(10, canvasWidth * 0.01);
+    const yPad = Math.max(10, canvasHeight * 0.01);
+    let accRects : CustomRect[] = [];
+    generateMondrianGoldenSquare(
+       {x1: 0, y1: 0, x2: canvasWidth, y2: canvasHeight, color: "#000000"},
+       xPad,
+       yPad,
+       accRects,
+       0,
+       nbIterations
+      );
+    setRects(accRects.slice());
+    return accRects;
+  }
+
   function randomColor() {
     return colors[randInt(0, colors.length)];
   }
@@ -177,7 +194,7 @@ function useMondrian() {
     setColors(newColors);
   }
 
-  return { generate, rects, setHasBlack };
+  return { generate: generateGoldenSquare,  /*generate,*/ rects, setHasBlack };
 
 }
 
