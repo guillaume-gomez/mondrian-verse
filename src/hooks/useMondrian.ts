@@ -68,9 +68,10 @@ function useMondrian() {
         return;
       }
 
-      if(limit === 1) {
+      if(depth === 0) {
         // initial step
         const rectsArray = splitRects(rect, xPad, yPad);
+        console.log("once", rectsArray)
         if(rectsArray.length === 2) {
           generateMondrianGoldenSquare(rectsArray[0], xPad, yPad, accRects, depth + 1, limit);
           generateMondrianGoldenSquare(rectsArray[1], xPad, yPad, accRects, depth + 1, limit);
@@ -79,6 +80,7 @@ function useMondrian() {
         }
       } else {
         const rectsArray = splitRectsGoldenSquare(rect, xPad, yPad);
+        console.log("toto", rectsArray)
         if(rectsArray.length === 2 ) {
           generateMondrianGoldenSquare(rectsArray[0], xPad, yPad, accRects, depth + 1, limit);
           generateMondrianGoldenSquare(rectsArray[1], xPad, yPad, accRects, depth + 1, limit);
@@ -100,13 +102,15 @@ function useMondrian() {
 
       // If the rectangle is wider than it's height do a left/right split
       if (width > height) {
-          const cut = Math.ceil(width / Phi);
+          const cut = rect.x1 + Math.ceil(width / Phi);
+          console.log("width ", cut, " between", rect)
           const r1 = { x1, y1, x2: cut, y2, color: randomColor() };
           const r2 = { x1: cut, y1, x2, y2, color: randomColor() };
           return [r1, r2];
       // Else do a top/bottom split
       } else {
-          const cut = Math.ceil(height / Phi);
+          const cut = rect.y1 + Math.ceil(height / Phi);
+          console.log("height ", cut, " between", rect)
           const r1 = { x1, y1, x2, y2: cut, color: randomColor() };
           const r2 = { x1, y1: cut, x2, y2, color: randomColor() };
           return [r1, r2];
@@ -169,6 +173,7 @@ function useMondrian() {
        0,
        nbIterations
       );
+    console.log(accRects);
     setRects(accRects.slice());
     return accRects;
   }
