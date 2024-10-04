@@ -190,7 +190,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
           }
         </group>
         <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
-        <directionalLight position={[0, 0, 5]} intensity={0.5} />
+        <directionalLight position={[0, 0, 5]} intensity={1} />
         <CameraControls
             ref={cameraControlRef}
             minPolarAngle={Math.PI/8}
