@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { CameraControls, Grid } from '@react-three/drei';
+import { CameraControls, Grid, Stage } from '@react-three/drei';
 import Borders from "./ThreeComponents/Borders";
 import ColoredBox from "./ThreeComponents/ColoredBox";
 import VisualizationSelect, { visualizationType } from "./VisualizationSelect";
@@ -170,6 +170,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
       >
         <color attach="background" args={[0x797979]} />
         { import.meta.env.MODE === "development" && <Grid />}
+        <Stage adjustCamera={false}>
         <group scale={1/SCALE} position={[-((width/2)/SCALE), (height/2)/SCALE, 0]}>
           { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder * SCALE} width={width} height={height} /> }
           {
@@ -200,6 +201,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
             minDistance={0.09}
             maxDistance={4}
         />
+        </Stage>
       </Canvas>
     </div>
     <p className="text-xs italic">Double click/tap on the canvas to go full screen</p>
