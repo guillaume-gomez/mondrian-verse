@@ -171,36 +171,36 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
         <color attach="background" args={[0x797979]} />
         { import.meta.env.MODE === "development" && <Grid />}
         <Stage adjustCamera={false}>
-        <group scale={1/SCALE} position={[-((width/2)/SCALE), (height/2)/SCALE, 0]}>
-          { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder * SCALE} width={width} height={height} /> }
-          {
-            rects.map((rect, index) => {
-              const depth = computeBorderByColor(rect.color as possibleColorsType) * SCALE;
-              return (
-                <ColoredBox
-                  width={width}
-                  height={height}
-                  key={index}
-                  rect={rect}
-                  thickness={thickness}
-                  depth={depth}
-                  position={computePosition(rect, depth)}
-                />
-              );
-            })
-          }
-        </group>
-        <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
-        <directionalLight position={[0, 0, 5]} intensity={1} />
-        <CameraControls
-            ref={cameraControlRef}
-            minPolarAngle={Math.PI/8}
-            maxPolarAngle={Math.PI}
-            minAzimuthAngle={-Math.PI / 1.8}
-            maxAzimuthAngle={Math.PI / 1.8}
-            minDistance={0.09}
-            maxDistance={4}
-        />
+          <group scale={1/SCALE} position={[-((width/2)/SCALE), (height/2)/SCALE, 0]}>
+            { hasBorder && <Borders rects={rects} thickness={thickness} depth={depthBorder * SCALE} width={width} height={height} /> }
+            {
+              rects.map((rect, index) => {
+                const depth = computeBorderByColor(rect.color as possibleColorsType) * SCALE;
+                return (
+                  <ColoredBox
+                    width={width}
+                    height={height}
+                    key={index}
+                    rect={rect}
+                    thickness={thickness}
+                    depth={depth}
+                    position={computePosition(rect, depth)}
+                  />
+                );
+              })
+            }
+          </group>
+          <ambientLight args={[0xffffff]} intensity={0.5} position={[0, 0.5, 0.5]} />
+          <directionalLight position={[0, 0, 5]} intensity={1} />
+          <CameraControls
+              ref={cameraControlRef}
+              minPolarAngle={Math.PI/8}
+              maxPolarAngle={Math.PI}
+              minAzimuthAngle={-Math.PI / 1.8}
+              maxAzimuthAngle={Math.PI / 1.8}
+              minDistance={0.09}
+              maxDistance={4}
+          />
         </Stage>
       </Canvas>
     </div>
