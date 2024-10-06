@@ -29,6 +29,7 @@ const Phi = 1.618003987;
 function useMondrian() {
   const [rects, setRects] = useState<CustomRect[]>([]);
   const [colors, setColors] = useState<string[]>(defaultColors);
+  const [useGoldenSquare, setUseGoldenSquare] = useState<boolean>(false);
 
 
   function generateMondrian(
@@ -142,8 +143,16 @@ function useMondrian() {
       }
   }
 
-
   function generate(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
+    if(useGoldenSquare) {
+      return generateGoldenSquareMondrian(canvasWidth, canvasHeight, nbIterations);
+    }
+
+    return generateRandomMondrian(canvasWidth, canvasHeight, nbIterations);
+  }
+
+
+  function generateRandomMondrian(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
     // magic number to avoid to little rects
     const xPad = Math.max(10, canvasWidth * 0.01);
     const yPad = Math.max(10, canvasHeight * 0.01);
@@ -160,7 +169,7 @@ function useMondrian() {
     return accRects;
   }
 
-  function generateGoldenSquare(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
+  function generateGoldenSquareMondrian(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
     // magic number to avoid to little rects
     const xPad = Math.max(10, canvasWidth * 0.01);
     const yPad = Math.max(10, canvasHeight * 0.01);
@@ -199,7 +208,7 @@ function useMondrian() {
     setColors(newColors);
   }
 
-  return { generate: generateGoldenSquare,  /*generate,*/ rects, setHasBlack };
+  return { generate, rects, setHasBlack, setUseGoldenSquare };
 
 }
 
