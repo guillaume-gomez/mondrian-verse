@@ -10,7 +10,11 @@ interface VisualizationProps {
 
 function VisualizationSelect({onChange, visualization} : VisualizationProps ): React.ReactElement {
   return (
-     <select className="select w-full max-w-xs" value={visualization} onChange={(event) => onChange(event.target.value as visualizationType)}>
+    <select
+      className="select w-full max-w-xs"
+      value={visualization}
+      onChange={(event) => onChange(event.target.value as visualizationType)}
+    >
         <option disabled selected>Pick your vizualisation</option>
         <option value="basic">Basic</option>
         <option value="bordered">Bordered</option>

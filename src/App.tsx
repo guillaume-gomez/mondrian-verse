@@ -84,7 +84,7 @@ function App() {
   }
 
   function toRunPeriodically() {
-    startInterval(() => generate(width, height, nbIterations), 1250);
+    startInterval(() => generate(width, height, nbIterations), 2000);
   }
   
   return (
