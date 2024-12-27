@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { format } from "date-fns";
-import './App.css';
 import useMondrian from "./hooks/useMondrian";
 import useSetInterval from "./hooks/useSetInterval";
 import Footer from "./components/Footer";
@@ -87,7 +86,7 @@ function App() {
   }
 
   function toRunPeriodically() {
-    startInterval(() => generate(width, height, nbIterations), 1250);
+    startInterval(() => generate(width, height, nbIterations), 2000);
   }
   
   return (
