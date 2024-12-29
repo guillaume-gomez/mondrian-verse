@@ -5,6 +5,7 @@ import useSetInterval from "./hooks/useSetInterval";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import SliderWithLabel from "./components/SliderWithLabel";
+import Checkbox from "./components/Checkbox";
 import MondrianCanvas, { ExternalActionInterface } from "./components/MondrianCanvas";
 import MondrianThreeJs from "./components/MondrianThreeJs";
 import { useWindowSize } from "rooks";
@@ -22,7 +23,8 @@ function App() {
   const [thickness, setThickness] = useState<number>(10);
   const [enableBlack, setEnableBlack] = useState<boolean>(true);
   const [mode, setMode] = useState<"2d"|"3d">("3d");
-  const { generate, rects, setHasBlack } = useMondrian();
+  const [goldenSquare, setGoldenSquare] = useState<boolean>(false);
+  const { generate, rects, setHasBlack, setUseGoldenSquare } = useMondrian();
   const { startInterval, stopInterval, isIntervalRunning } = useSetInterval();
 
   const canvasContainerRef = useRef<HTMLDivElement>(null);
@@ -115,11 +117,12 @@ function App() {
               />
             }
           </div>
-          <div className="form-control self-end">
-              <label className="label cursor-pointer gap-2">
-              <span className="label-text">3D Version</span>
-              <input type="checkbox" className="toggle" checked={mode === "3d"} onChange={() => setMode(mode === "3d" ? "2d" : "3d")} />
-            </label>
+          <div className="self-end">
+            <Checkbox
+              label={"3D Version"}
+              checked={mode === "3d"}
+              toggle={() => setMode(mode === "3d" ? "2d" : "3d")}
+            />
           </div>
         </div>
         <div className="w-2/4 mx-auto">
@@ -132,12 +135,22 @@ function App() {
             <SliderWithLabel label="Nb Iteration" min={2} max={20} value={nbIterations} step={1} onChange={(value) => setNbIteration(parseInt(value))}/>
             <SliderWithLabel label="Width" min={200} max={maxWidth} value={width} step={5} onChange={(value) => setWidth(parseInt(value))}/>
             <SliderWithLabel label="Height" min={200} max={maxHeight} value={height} step={5} onChange={(value) => setHeight(parseInt(value))}/>
-            <div className="form-control">
-              <label className="label cursor-pointer gap-2">
-                <span className="label-text">Has Black as possible colors</span>
-                <input type="checkbox" className="toggle" checked={enableBlack} onChange={() => {setHasBlack(!enableBlack); setEnableBlack(!enableBlack)}} />
-              </label>
-            </div>
+            <Checkbox
+              label={"Has Black as possible colors"}
+              checked={enableBlack}
+              toggle={() => {
+                setHasBlack(!enableBlack);
+                setEnableBlack(!enableBlack)
+              }}
+            />
+            <Checkbox
+              label={"Use golden square ration ?"}
+              checked={goldenSquare}
+              toggle={() => {
+                setGoldenSquare(!goldenSquare);
+                setUseGoldenSquare(!goldenSquare);
+              }}
+            />
             <button className="btn btn-secondary btn-sm" onClick={resetDefaultValues}> Set Default Values</button>
             <div
               className={`flex flex-row self-end ${mode === "3d" ? "tooltip" : ""}`}

@@ -24,10 +24,12 @@ const defaultColors = [
     ...possibleColors
 ];
 
+const Phi = 1.618003987;
 
 function useMondrian() {
   const [rects, setRects] = useState<CustomRect[]>([]);
   const [colors, setColors] = useState<string[]>(defaultColors);
+  const [useGoldenSquare, setUseGoldenSquare] = useState<boolean>(false);
 
 
   function generateMondrian(
@@ -53,6 +55,70 @@ function useMondrian() {
     }
   }
 
+  function generateMondrianGoldenSquare(
+      rect: CustomRect,
+      xPad: number,
+      yPad: number,
+      accRects: CustomRect[],
+      depth: number = 0,
+      limit: number = 1
+  ) {
+      if (depth === limit) {
+        // dangerous :)
+        accRects.push(rect);
+        return;
+      }
+
+      if(depth === 0) {
+        // initial step
+        const rectsArray = splitRects(rect, xPad, yPad);
+        console.log("once", rectsArray)
+        if(rectsArray.length === 2) {
+          generateMondrianGoldenSquare(rectsArray[0], xPad, yPad, accRects, depth + 1, limit);
+          generateMondrianGoldenSquare(rectsArray[1], xPad, yPad, accRects, depth + 1, limit);
+        } else {
+          accRects.push(rect);
+        }
+      } else {
+        const rectsArray = splitRectsGoldenSquare(rect, xPad, yPad);
+        console.log("toto", rectsArray)
+        if(rectsArray.length === 2 ) {
+          generateMondrianGoldenSquare(rectsArray[0], xPad, yPad, accRects, depth + 1, limit);
+          generateMondrianGoldenSquare(rectsArray[1], xPad, yPad, accRects, depth + 1, limit);
+        } else {
+          accRects.push(rect);
+        }
+      }
+  }
+
+    function splitRectsGoldenSquare(rect: CustomRect, xPad: number, yPad: number) : [CustomRect, CustomRect] | [] {
+     // Check the rectangle is enough large and tall
+     const width = widthRect(rect);
+     const height = heightRect(rect);
+      if (width < 2 * xPad || height < 2 * yPad) {
+          return [];
+      }
+      const { x1, x2, y1, y2 } = rect;
+
+
+      // If the rectangle is wider than it's height do a left/right split
+      if (width > height) {
+          const cut = rect.x1 + Math.ceil(width / Phi);
+          console.log("width ", cut, " between", rect)
+          const r1 = { x1, y1, x2: cut, y2, color: randomColor() };
+          const r2 = { x1: cut, y1, x2, y2, color: randomColor() };
+          return [r1, r2];
+      // Else do a top/bottom split
+      } else {
+          const cut = rect.y1 + Math.ceil(height / Phi);
+          console.log("height ", cut, " between", rect)
+          const r1 = { x1, y1, x2, y2: cut, color: randomColor() };
+          const r2 = { x1, y1: cut, x2, y2, color: randomColor() };
+          return [r1, r2];
+      }
+  }
+
+
   function splitRects(rect: CustomRect, xPad: number, yPad: number) : [CustomRect, CustomRect] | [] {
      // Check the rectangle is enough large and tall
      const width = widthRect(rect);
@@ -77,8 +143,16 @@ function useMondrian() {
       }
   }
 
-
   function generate(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
+    if(useGoldenSquare) {
+      return generateGoldenSquareMondrian(canvasWidth, canvasHeight, nbIterations);
+    }
+
+    return generateRandomMondrian(canvasWidth, canvasHeight, nbIterations);
+  }
+
+
+  function generateRandomMondrian(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
     // magic number to avoid to little rects
     const xPad = Math.max(10, canvasWidth * 0.01);
     const yPad = Math.max(10, canvasHeight * 0.01);
@@ -91,6 +165,24 @@ function useMondrian() {
        0,
        nbIterations
       );
+    setRects(accRects.slice());
+    return accRects;
+  }
+
+  function generateGoldenSquareMondrian(canvasWidth: number, canvasHeight: number, nbIterations: number = 3) {
+    // magic number to avoid to little rects
+    const xPad = Math.max(10, canvasWidth * 0.01);
+    const yPad = Math.max(10, canvasHeight * 0.01);
+    let accRects : CustomRect[] = [];
+    generateMondrianGoldenSquare(
+       {x1: 0, y1: 0, x2: canvasWidth, y2: canvasHeight, color: "#000000"},
+       xPad,
+       yPad,
+       accRects,
+       0,
+       nbIterations
+      );
+    console.log(accRects);
     setRects(accRects.slice());
     return accRects;
   }
@@ -116,7 +208,7 @@ function useMondrian() {
     setColors(newColors);
   }
 
-  return { generate, rects, setHasBlack };
+  return { generate, rects, setHasBlack, setUseGoldenSquare };
 
 }
 
