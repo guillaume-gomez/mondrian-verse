@@ -8,7 +8,6 @@ interface HasBorderInputProps {
 }
 
 function HasBorderInput({hasBorder, onChange} : HasBorderInputProps ): React.ReactElement {
-  console.log(hasBorder)
   return (
     <Checkbox
       label={"with Frame ?"}
