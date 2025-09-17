@@ -10,6 +10,9 @@ https://github.com/guillaume-gomez/mondrian-verse/assets/5362875/b958a861-6df7-4
 - 3D
 ![mondrian in 3d](example3d.png)
 
+[output2.webm](https://github.com/user-attachments/assets/9de0915e-6e92-4209-a88f-aaf9869ae9b9)
+
+
 ## Inspirations
 
 https://www.re-thinkingthefuture.com/architects-lounge/a447-mondrian-inspired-plugin-by-wesearch-lab/
