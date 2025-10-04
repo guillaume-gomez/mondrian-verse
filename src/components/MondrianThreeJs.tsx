@@ -159,7 +159,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
   return (
   <div className="flex flex-col justify-center items-center gap-2 w-5/6 h-full">
     <div
-      className="w-full h-screen-responsive"
+      className="w-full h-screen-responsive hover:cursor-grab"
       ref={containerCanvas}
       {...doubleTapEvent}
     >
