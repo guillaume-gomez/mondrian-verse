@@ -198,7 +198,7 @@ function MondrianThreeJs({width , height, thickness, rects} : MondrianThreeJsPro
               maxPolarAngle={Math.PI}
               minAzimuthAngle={-Math.PI / 1.8}
               maxAzimuthAngle={Math.PI / 1.8}
-              minDistance={0.09}
+              minDistance={0.3}
               maxDistance={4}
           />
         </Stage>
